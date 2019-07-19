@@ -65,6 +65,6 @@
     "readonlyRootFilesystem": null,
     "dockerLabels": null,
     "privileged": null,
-    "name": "web"
+    "name": "buffalo"
   }
 ]
