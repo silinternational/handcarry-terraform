@@ -24,7 +24,6 @@ variable "cloudflare_email" {}
 variable "cloudflare_token" {}
 variable "cloudflare_domain" {}
 variable "tf_remote_common" {}
-variable "logentries_account_key" {}
 
 variable "subdomain_api" {
   default = "api"
@@ -58,40 +57,8 @@ variable "db_user" {
   default = "handcarry"
 }
 
-variable "saml_contact_email" {
-  default = "gtis_appsdev_alerts@groups.sil.org"
-}
-
-variable "saml_contact_name" {
-  default = "GTIS Application Development"
-}
-
-variable "saml_entity_id" {
-  default = "doorman"
-}
-
-variable "saml_org_name" {
-  default = "Insite"
-}
-
-variable "saml_org_url" {
-  default = "https://www.insitehome.org"
-}
-
-variable "enable_phpmyadmin" {
-  default = 0
-}
-
-variable "api_base_url" {}
-variable "saml_application_baseurl" {}
-variable "saml_baseurlpath" {}
-variable "saml_cert_data" {}
-variable "saml_idp" {}
-variable "saml_slo_url" {}
-variable "saml_sso_url" {}
 variable "ui_cert_domain" {}
 variable "ui_url" {}
-variable "ui_url_logged_out" {}
 
 variable "ui_aliases" {
   type        = "list"
