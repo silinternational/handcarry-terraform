@@ -34,7 +34,7 @@ resource "aws_alb_target_group" "tg" {
  */
 resource "aws_alb_listener_rule" "tg" {
   listener_arn = "${data.terraform_remote_state.common.alb_https_listener_arn}"
-  priority     = "219"
+  priority     = "719"
 
   action {
     type             = "forward"

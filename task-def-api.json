@@ -22,14 +22,6 @@
     "cpu": ${cpu},
     "environment": [
       {
-        "name": "SENDGRID_API_KEY",
-        "value": "${SENDGRID_API_KEY}"
-      },
-      {
-        "name": "SENDGRID_LIST_ID",
-        "value": "${SENDGRID_LIST_ID}"
-      },
-      {
         "name": "DATABASE_URL",
         "value": "${DATABASE_URL}"
       },
