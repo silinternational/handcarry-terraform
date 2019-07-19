@@ -6,7 +6,7 @@
       {
         "hostPort": 0,
         "protocol": "tcp",
-        "containerPort": 80
+        "containerPort": 8080
       }
     ],
     "command": null,
