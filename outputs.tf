@@ -7,7 +7,7 @@ output "db_password" {
 }
 
 output "ui_bucket" {
-  value = "${var.app_name}.${var.cloudflare_domain}"
+  value = "${var.subdomain_ui}.${var.cloudflare_domain}"
 }
 
 output "ui_url" {
