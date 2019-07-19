@@ -133,3 +133,83 @@ resource "cloudflare_record" "dns" {
   type    = "CNAME"
   proxied = true
 }
+
+/******
+ *  Adminer service
+ */
+resource "aws_alb_target_group" "adminer" {
+  name                 = "${replace("tg-${var.app_name}-adminer-${data.terraform_remote_state.common.app_env}", "/(.{0,32})(.*)/", "$1")}"
+  port                 = "80"
+  protocol             = "HTTP"
+  vpc_id               = "${data.terraform_remote_state.common.vpc_id}"
+  deregistration_delay = "30"
+
+  stickiness {
+    type = "lb_cookie"
+  }
+
+  health_check {
+    path    = "/"
+    matcher = "200"
+  }
+}
+
+/*
+ * Create listener rule for hostname routing to new target group
+ */
+resource "aws_alb_listener_rule" "adminer" {
+  listener_arn = "${data.terraform_remote_state.common.alb_https_listener_arn}"
+  priority     = "720"
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_alb_target_group.adminer.arn}"
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["${var.subdomain_api}-adminer.${var.cloudflare_domain}"]
+  }
+}
+
+/*
+ * Create task definition template for Postgres Adminer
+ */
+data "template_file" "task_def_adminer" {
+  template = "${file("${path.module}/task-def-adminer.json")}"
+
+  vars {
+    cpu                    = "128"
+    memory                 = "128"
+    docker_image           = "adminer"
+    docker_tag             = "latest"
+    ADMINER_DEFAULT_SERVER = "${module.rds.address}"
+  }
+}
+
+/*
+ * Create new ecs service
+ */
+module "ecsadminer" {
+  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=2.2.0"
+  cluster_id         = "${data.terraform_remote_state.common.ecs_cluster_id}"
+  service_name       = "${var.app_name}-adminer"
+  service_env        = "${data.terraform_remote_state.common.app_env}"
+  container_def_json = "${data.template_file.task_def_adminer.rendered}"
+  desired_count      = "1"
+  tg_arn             = "${aws_alb_target_group.adminer.arn}"
+  lb_container_name  = "adminer"
+  lb_container_port  = "80"
+  ecsServiceRole_arn = "${data.terraform_remote_state.common.ecsServiceRole_arn}"
+}
+
+/*
+ * Create Cloudflare DNS record
+ */
+resource "cloudflare_record" "adminer" {
+  domain  = "${var.cloudflare_domain}"
+  name    = "${var.subdomain_api}-adminer"
+  value   = "${data.terraform_remote_state.common.alb_dns_name}"
+  type    = "CNAME"
+  proxied = true
+}
