@@ -90,17 +90,20 @@ data "template_file" "task_def_api" {
   template = "${file("${path.module}/task-def-api.json")}"
 
   vars {
-    cpu               = "${var.cpu}"
-    memory            = "${var.memory}"
-    docker_image      = "${module.ecr.repo_url}"
-    docker_tag        = "${var.docker_tag}"
-    APP_ENV           = "${data.terraform_remote_state.common.app_env}"
-    DATABASE_URL      = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
-    UI_URL            = "${var.ui_url}"
-    HOST              = "https://${var.subdomain_api}.${var.cloudflare_domain}"
-    log_group         = "${aws_cloudwatch_log_group.handcarry.name}"
-    region            = "${var.aws_region}"
-    log_stream_prefix = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
+    cpu                = "${var.cpu}"
+    memory             = "${var.memory}"
+    docker_image       = "${module.ecr.repo_url}"
+    docker_tag         = "${var.docker_tag}"
+    APP_ENV            = "${data.terraform_remote_state.common.app_env}"
+    DATABASE_URL       = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
+    UI_URL             = "${var.ui_url}"
+    HOST               = "https://${var.subdomain_api}.${var.cloudflare_domain}"
+    log_group          = "${aws_cloudwatch_log_group.handcarry.name}"
+    region             = "${var.aws_region}"
+    log_stream_prefix  = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
+    saml_idp_sso_url   = "${var.saml_idp_sso_url}"
+    saml_idp_entity_id = "${var.saml_idp_entity_id}"
+    saml_idp_cert_data = "${var.saml_idp_cert_data}"
   }
 }
 

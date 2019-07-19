@@ -23,6 +23,9 @@ variable "aws_secret_key" {}
 variable "cloudflare_email" {}
 variable "cloudflare_token" {}
 variable "cloudflare_domain" {}
+variable "saml_idp_sso_url" {}
+variable "saml_idp_entity_id" {}
+variable "saml_idp_cert_data" {}
 variable "tf_remote_common" {}
 
 variable "subdomain_api" {

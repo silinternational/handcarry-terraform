@@ -44,6 +44,18 @@
       {
         "name": "GO_ENV",
         "value": "production"
+      },
+      {
+        "name": "SAML_IDP_SSO_URL",
+        "value": "${saml_idp_sso_url}"
+      },
+      {
+        "name": "SAML_IDP_ENTITY_ID",
+        "value": "${saml_idp_entity_id}"
+      },
+      {
+        "name": "SAML_IDP_CERT_DATA",
+        "value": "${saml_idp_cert_data}"
       }
     ],
     "ulimits": null,
