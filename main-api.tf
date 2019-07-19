@@ -139,7 +139,7 @@ resource "cloudflare_record" "dns" {
  */
 resource "aws_alb_target_group" "adminer" {
   name                 = "${replace("tg-${var.app_name}-adminer-${data.terraform_remote_state.common.app_env}", "/(.{0,32})(.*)/", "$1")}"
-  port                 = "80"
+  port                 = "8080"
   protocol             = "HTTP"
   vpc_id               = "${data.terraform_remote_state.common.vpc_id}"
   deregistration_delay = "30"
@@ -199,7 +199,7 @@ module "ecsadminer" {
   desired_count      = "1"
   tg_arn             = "${aws_alb_target_group.adminer.arn}"
   lb_container_name  = "adminer"
-  lb_container_port  = "80"
+  lb_container_port  = "8080"
   ecsServiceRole_arn = "${data.terraform_remote_state.common.ecsServiceRole_arn}"
 }
 
