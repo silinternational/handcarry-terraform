@@ -4,7 +4,7 @@ module "uisite" {
   version = "1.0.2"
 
   aliases        = ["${var.ui_aliases}"]
-  bucket_name    = "${var.app_name}.${var.cloudflare_domain}"
+  bucket_name    = "${var.subdomain_ui}.${var.cloudflare_domain}"
   cert_domain    = "${var.ui_cert_domain}"
   cf_default_ttl = "0"
   origin_path    = "public"
