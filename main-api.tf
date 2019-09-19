@@ -50,7 +50,7 @@ resource "aws_alb_listener_rule" "tg" {
 /*
  * Create cloudwatch log group for app logs
  */
-resource "aws_cloudwatch_log_group" "handcarry" {
+resource "aws_cloudwatch_log_group" "wecarry" {
   name              = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
   retention_in_days = 14
 
@@ -98,7 +98,7 @@ data "template_file" "task_def_api" {
     DATABASE_URL       = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
     UI_URL             = "${var.ui_url}"
     HOST               = "https://${var.subdomain_api}.${var.cloudflare_domain}"
-    log_group          = "${aws_cloudwatch_log_group.handcarry.name}"
+    log_group          = "${aws_cloudwatch_log_group.wecarry.name}"
     region             = "${var.aws_region}"
     log_stream_prefix  = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
     saml_idp_sso_url   = "${var.saml_idp_sso_url}"

@@ -3,7 +3,7 @@ variable "aws_region" {
 }
 
 variable "app_name" {
-  default = "handcarry"
+  default = "wecarry"
 }
 
 variable "memory" {
@@ -41,11 +41,11 @@ variable "docker_tag" {
 }
 
 variable "admin_email" {
-  default = "admin@handcarry.app"
+  default = "support@wecarry.app"
 }
 
 variable "alerts_email" {
-  default = "admin@handcarry.app"
+  default = "support@wecarry.app"
 }
 
 variable "alerts_email_enabled" {
@@ -53,11 +53,11 @@ variable "alerts_email_enabled" {
 }
 
 variable "db_database" {
-  default = "handcarry"
+  default = "wecarry"
 }
 
 variable "db_user" {
-  default = "handcarry"
+  default = "wecarry"
 }
 
 variable "ui_cert_domain" {}
@@ -65,5 +65,5 @@ variable "ui_url" {}
 
 variable "ui_aliases" {
   type        = "list"
-  description = "List of domains to serve UI site on, ex: dev.handcarry.app"
+  description = "List of domains to serve UI site on, ex: dev.wecarry.app"
 }
