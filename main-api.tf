@@ -196,7 +196,7 @@ module "ecsadminer" {
   service_name       = "${var.app_name}-adminer"
   service_env        = "${data.terraform_remote_state.common.app_env}"
   container_def_json = "${data.template_file.task_def_adminer.rendered}"
-  desired_count      = "1"
+  desired_count      = "{$var.enable_adminer}"
   tg_arn             = "${aws_alb_target_group.adminer.arn}"
   lb_container_name  = "adminer"
   lb_container_port  = "8080"
@@ -207,6 +207,7 @@ module "ecsadminer" {
  * Create Cloudflare DNS record
  */
 resource "cloudflare_record" "adminer" {
+  count   = "${var.enable_adminer}"
   domain  = "${var.cloudflare_domain}"
   name    = "${var.subdomain_api}-adminer"
   value   = "${data.terraform_remote_state.common.alb_dns_name}"

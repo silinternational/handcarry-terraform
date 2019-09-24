@@ -18,6 +18,11 @@ variable "desired_count" {
   default = 2
 }
 
+variable "enable_adminer" {
+  default     = 0
+  description = "1 = enable adminer, 0 = disable adminer"
+}
+
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "cloudflare_email" {}

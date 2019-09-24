@@ -39,7 +39,7 @@
       },
       {
         "name": "UI_URL",
-        "value": "https://dev.wecarry.app"
+        "value": "${UI_URL}"
       },
       {
         "name": "GO_ENV",
