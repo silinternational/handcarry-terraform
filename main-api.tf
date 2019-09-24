@@ -196,7 +196,7 @@ module "ecsadminer" {
   service_name       = "${var.app_name}-adminer"
   service_env        = "${data.terraform_remote_state.common.app_env}"
   container_def_json = "${data.template_file.task_def_adminer.rendered}"
-  desired_count      = "{$var.enable_adminer}"
+  desired_count      = "${var.enable_adminer}"
   tg_arn             = "${aws_alb_target_group.adminer.arn}"
   lb_container_name  = "adminer"
   lb_container_port  = "8080"
