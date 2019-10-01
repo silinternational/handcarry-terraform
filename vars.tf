@@ -23,15 +23,28 @@ variable "enable_adminer" {
   description = "1 = enable adminer, 0 = disable adminer"
 }
 
+variable "aws_s3_disable_ssl" {
+  default = "false"
+}
+
+variable "auth_callback_url" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
+variable "aws_s3_endpoint" {}
+variable "aws_s3_bucket" {}
+variable "aws_s3_access_key_id" {}
+variable "aws_s3_secret_access_key" {}
 variable "cloudflare_email" {}
 variable "cloudflare_token" {}
 variable "cloudflare_domain" {}
+variable "google_key" {}
+variable "google_secret" {}
 variable "saml_idp_sso_url" {}
 variable "saml_idp_entity_id" {}
 variable "saml_idp_cert_data" {}
+variable "session_secret" {}
 variable "tf_remote_common" {}
+
 
 variable "subdomain_api" {
   default = "api"
