@@ -23,14 +23,9 @@ variable "enable_adminer" {
   description = "1 = enable adminer, 0 = disable adminer"
 }
 
-variable "aws_s3_disable_ssl" {
-  default = "false"
-}
-
 variable "auth_callback_url" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
-variable "aws_s3_endpoint" {}
 variable "aws_s3_bucket" {}
 variable "aws_s3_access_key_id" {}
 variable "aws_s3_secret_access_key" {}

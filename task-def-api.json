@@ -38,14 +38,6 @@
         "value": "${HOST}"
       },
       {
-        "name": "AWS_S3_ENDPOINT",
-        "value": "${AWS_S3_ENDPOINT}"
-      },
-      {
-        "name": "AWS_S3_DISABLE_SSL",
-        "value": "${AWS_S3_DISABLE_SSL}"
-      },
-      {
         "name": "AWS_S3_BUCKET",
         "value": "${AWS_S3_BUCKET}"
       },
