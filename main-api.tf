@@ -98,6 +98,7 @@ data "template_file" "task_def_api" {
     DATABASE_URL             = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
     UI_URL                   = "${var.ui_url}"
     HOST                     = "https://${var.subdomain_api}.${var.cloudflare_domain}"
+    AWS_REGION               = "${var.aws_region}"
     AWS_S3_BUCKET            = "${var.aws_s3_bucket}"
     AWS_S3_ACCESS_KEY_ID     = "${var.aws_s3_access_key_id}"
     AWS_S3_SECRET_ACCESS_KEY = "${var.aws_s3_secret_access_key}"
