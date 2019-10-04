@@ -38,6 +38,10 @@
         "value": "${HOST}"
       },
       {
+        "name": "AWS_REGION",
+        "value": "${AWS_REGION}"
+      },
+      {
         "name": "AWS_S3_BUCKET",
         "value": "${AWS_S3_BUCKET}"
       },
