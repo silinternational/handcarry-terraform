@@ -32,11 +32,13 @@ variable "aws_s3_secret_access_key" {}
 variable "cloudflare_email" {}
 variable "cloudflare_token" {}
 variable "cloudflare_domain" {}
+variable "email_service" {}
 variable "google_key" {}
 variable "google_secret" {}
 variable "saml_idp_sso_url" {}
 variable "saml_idp_entity_id" {}
 variable "saml_idp_cert_data" {}
+variable "sendgrid_api_key" {}
 variable "session_secret" {}
 variable "tf_remote_common" {}
 
