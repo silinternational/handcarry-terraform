@@ -58,6 +58,14 @@
         "value": "${AUTH_CALLBACK_URL}"
       },
       {
+        "name": "EMAIL_SERVICE",
+        "value": "${EMAIL_SERVICE}"
+      },
+      {
+        "name": "SENDGRID_API_KEY",
+        "value": "${SESSION_SECRET}"
+      },
+      {
         "name": "SESSION_SECRET",
         "value": "${SESSION_SECRET}"
       },
