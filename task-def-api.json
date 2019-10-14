@@ -63,7 +63,7 @@
       },
       {
         "name": "SENDGRID_API_KEY",
-        "value": "${SESSION_SECRET}"
+        "value": "${SENDGRID_API_KEY}"
       },
       {
         "name": "SESSION_SECRET",
