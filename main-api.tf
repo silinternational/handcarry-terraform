@@ -105,6 +105,7 @@ data "template_file" "task_def_api" {
     AUTH_CALLBACK_URL        = "${var.auth_callback_url}"
     SESSION_SECRET           = "${var.session_secret}"
     EMAIL_SERVICE            = "${var.email_service}"
+    MOBILE_SERVICE           = "${var.mobile_service}"
     GOOGLE_KEY               = "${var.google_key}"
     GOOGLE_SECRET            = "${var.google_secret}"
     log_group                = "${aws_cloudwatch_log_group.wecarry.name}"
@@ -114,6 +115,7 @@ data "template_file" "task_def_api" {
     saml_idp_entity_id       = "${var.saml_idp_entity_id}"
     saml_idp_cert_data       = "${var.saml_idp_cert_data}"
     SENDGRID_API_KEY         = "${var.sendgrid_api_key}"
+    ROLLBAR_TOKEN            = "${var.rollbar_token}"
   }
 }
 

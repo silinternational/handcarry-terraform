@@ -62,6 +62,10 @@
         "value": "${EMAIL_SERVICE}"
       },
       {
+        "name": "MOBILE_SERVICE",
+        "value": "${MOBILE_SERVICE}"
+      },
+      {
         "name": "SENDGRID_API_KEY",
         "value": "${SENDGRID_API_KEY}"
       },
@@ -86,16 +90,8 @@
         "value": "production"
       },
       {
-        "name": "SAML_IDP_SSO_URL",
-        "value": "${saml_idp_sso_url}"
-      },
-      {
-        "name": "SAML_IDP_ENTITY_ID",
-        "value": "${saml_idp_entity_id}"
-      },
-      {
-        "name": "SAML_IDP_CERT_DATA",
-        "value": "${saml_idp_cert_data}"
+        "name": "ROLLBAR_TOKEN",
+        "value": "${ROLLBAR_TOKEN}"
       }
     ],
     "ulimits": null,
