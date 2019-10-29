@@ -90,6 +90,7 @@ data "template_file" "task_def_api" {
   template = "${file("${path.module}/task-def-api.json")}"
 
   vars {
+    GO_ENV                   = "${var.go_env}"
     cpu                      = "${var.cpu}"
     memory                   = "${var.memory}"
     docker_image             = "${module.ecr.repo_url}"

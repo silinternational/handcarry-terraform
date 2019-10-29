@@ -87,7 +87,7 @@
       },
       {
         "name": "GO_ENV",
-        "value": "production"
+        "value": "${GO_ENV}"
       },
       {
         "name": "ROLLBAR_TOKEN",

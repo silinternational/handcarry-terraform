@@ -33,6 +33,7 @@ variable "cloudflare_email" {}
 variable "cloudflare_token" {}
 variable "cloudflare_domain" {}
 variable "email_service" {}
+variable "go_env" {}
 variable "google_key" {}
 variable "google_secret" {}
 variable "mobile_service" {}
