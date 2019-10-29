@@ -38,9 +38,6 @@ variable "google_key" {}
 variable "google_secret" {}
 variable "mobile_service" {}
 variable "rollbar_token" {}
-variable "saml_idp_sso_url" {}
-variable "saml_idp_entity_id" {}
-variable "saml_idp_cert_data" {}
 variable "sendgrid_api_key" {}
 variable "session_secret" {}
 variable "tf_remote_common" {}

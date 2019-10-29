@@ -6,7 +6,7 @@ provider "aws" {
 
 provider "cloudflare" {
   version = "~> 1.0"
-  email = "${var.cloudflare_email}"
-  token = "${var.cloudflare_token}"
+  email   = "${var.cloudflare_email}"
+  token   = "${var.cloudflare_token}"
 }
 
