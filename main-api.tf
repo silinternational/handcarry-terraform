@@ -159,7 +159,7 @@ resource "aws_alb_target_group" "adminer" {
   }
 
   health_check {
-    path    = "/"
+    path    = "/site/status"
     matcher = "200"
   }
 }
