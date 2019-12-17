@@ -104,6 +104,7 @@ data "template_file" "task_def_api" {
     AWS_S3_SECRET_ACCESS_KEY = "${var.aws_s3_secret_access_key}"
     AUTH_CALLBACK_URL        = "${var.auth_callback_url}"
     SESSION_SECRET           = "${var.session_secret}"
+    EMAIL_FROM_ADDRESS       = "${var.email_from_address}"
     EMAIL_SERVICE            = "${var.email_service}"
     GOOGLE_KEY               = "${var.google_key}"
     GOOGLE_SECRET            = "${var.google_secret}"
