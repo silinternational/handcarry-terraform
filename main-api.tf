@@ -24,7 +24,7 @@ resource "aws_alb_target_group" "tg" {
   }
 
   health_check {
-    path    = "/"
+    path    = "/site/status"
     matcher = "200"
   }
 }
@@ -90,6 +90,7 @@ data "template_file" "task_def_api" {
   template = "${file("${path.module}/task-def-api.json")}"
 
   vars {
+    GO_ENV                   = "${var.go_env}"
     cpu                      = "${var.cpu}"
     memory                   = "${var.memory}"
     docker_image             = "${module.ecr.repo_url}"
@@ -106,15 +107,14 @@ data "template_file" "task_def_api" {
     SESSION_SECRET           = "${var.session_secret}"
     EMAIL_FROM_ADDRESS       = "${var.email_from_address}"
     EMAIL_SERVICE            = "${var.email_service}"
+    MOBILE_SERVICE           = "${var.mobile_service}"
     GOOGLE_KEY               = "${var.google_key}"
     GOOGLE_SECRET            = "${var.google_secret}"
     log_group                = "${aws_cloudwatch_log_group.wecarry.name}"
     region                   = "${var.aws_region}"
     log_stream_prefix        = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
-    saml_idp_sso_url         = "${var.saml_idp_sso_url}"
-    saml_idp_entity_id       = "${var.saml_idp_entity_id}"
-    saml_idp_cert_data       = "${var.saml_idp_cert_data}"
     SENDGRID_API_KEY         = "${var.sendgrid_api_key}"
+    ROLLBAR_TOKEN            = "${var.rollbar_token}"
   }
 }
 
