@@ -32,6 +32,7 @@ variable "aws_s3_secret_access_key" {}
 variable "cloudflare_email" {}
 variable "cloudflare_token" {}
 variable "cloudflare_domain" {}
+variable "email_from_address" {}
 variable "email_service" {}
 variable "go_env" {}
 variable "google_key" {}
