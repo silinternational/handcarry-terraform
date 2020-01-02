@@ -74,6 +74,18 @@ variable "db_user" {
   default = "wecarry"
 }
 
+variable "db_instance_class" {
+  default = "db.t2.micro"
+}
+
+variable "db_storage_encrypted" {
+  default = "false"
+}
+
+variable "db_deletion_protection" {
+  default = "false"
+}
+
 variable "ui_cert_domain" {}
 variable "ui_url" {}
 

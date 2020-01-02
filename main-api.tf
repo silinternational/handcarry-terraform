@@ -2,7 +2,7 @@
  * Create ECR repo
  */
 module "ecr" {
-  source              = "github.com/silinternational/terraform-modules//aws/ecr?ref=2.2.0"
+  source              = "github.com/silinternational/terraform-modules//aws/ecr?ref=2.7.0"
   repo_name           = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
   ecsInstanceRole_arn = "${data.terraform_remote_state.common.ecsInstanceRole_arn}"
   ecsServiceRole_arn  = "${data.terraform_remote_state.common.ecsServiceRole_arn}"
@@ -71,16 +71,19 @@ resource "random_id" "db_password" {
  * Create new rds instance
  */
 module "rds" {
-  source            = "github.com/silinternational/terraform-modules//aws/rds/mariadb?ref=2.2.0"
-  app_name          = "${var.app_name}"
-  app_env           = "${data.terraform_remote_state.common.app_env}-tf"
-  engine            = "postgres"
-  db_name           = "${var.db_database}"
-  db_root_user      = "${var.db_user}"
-  db_root_pass      = "${random_id.db_password.hex}"
-  subnet_group_name = "${data.terraform_remote_state.common.db_subnet_group_name}"
-  availability_zone = "${data.terraform_remote_state.common.aws_zones[0]}"
-  security_groups   = ["${data.terraform_remote_state.common.vpc_default_sg_id}"]
+  source              = "github.com/silinternational/terraform-modules//aws/rds/mariadb?ref=2.7.0"
+  app_name            = "${var.app_name}"
+  app_env             = "${data.terraform_remote_state.common.app_env}-tf"
+  engine              = "postgres"
+  instance_class      = "${var.db_instance_class}"
+  storage_encrypted   = "${var.db_storage_encrypted}"
+  db_name             = "${var.db_database}"
+  db_root_user        = "${var.db_user}"
+  db_root_pass        = "${random_id.db_password.hex}"
+  subnet_group_name   = "${data.terraform_remote_state.common.db_subnet_group_name}"
+  availability_zone   = "${data.terraform_remote_state.common.aws_zones[0]}"
+  security_groups     = ["${data.terraform_remote_state.common.vpc_default_sg_id}"]
+  deletion_protection = "${var.db_deletion_protection}"
 }
 
 /*
@@ -121,7 +124,7 @@ data "template_file" "task_def_api" {
  * Create new ecs service
  */
 module "ecsapi" {
-  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=2.2.0"
+  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=2.7.0"
   cluster_id         = "${data.terraform_remote_state.common.ecs_cluster_id}"
   service_name       = "${var.app_name}-api"
   service_env        = "${data.terraform_remote_state.common.app_env}"
@@ -201,7 +204,7 @@ data "template_file" "task_def_adminer" {
  * Create new ecs service
  */
 module "ecsadminer" {
-  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=2.2.0"
+  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=2.7.0"
   cluster_id         = "${data.terraform_remote_state.common.ecs_cluster_id}"
   service_name       = "${var.app_name}-adminer"
   service_env        = "${data.terraform_remote_state.common.app_env}"
