@@ -1,2 +1,2 @@
-# handcarry-terraform
-Terraform configuration for HandCarry App
+# wecarry-terraform
+Terraform configuration for WeCarry App
