@@ -7,7 +7,7 @@ module "uisite" {
   bucket_name         = "${var.ui_bucket_name}"
   cert_domain         = "${var.ui_cert_domain}"
   cf_default_ttl      = "0"
-  origin_path         = "public"
+  origin_path         = "/public"
   s3_origin_id        = "s3-origin"
   deployment_user_arn = "${data.terraform_remote_state.common.codeship_arn}"
 }
