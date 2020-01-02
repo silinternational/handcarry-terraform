@@ -113,7 +113,6 @@ data "template_file" "task_def_api" {
     log_group                = "${aws_cloudwatch_log_group.wecarry.name}"
     region                   = "${var.aws_region}"
     log_stream_prefix        = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
-    SENDGRID_API_KEY         = "${var.sendgrid_api_key}"
     ROLLBAR_TOKEN            = "${var.rollbar_token}"
   }
 }

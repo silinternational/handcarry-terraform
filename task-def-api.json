@@ -70,10 +70,6 @@
         "value": "${MOBILE_SERVICE}"
       },
       {
-        "name": "SENDGRID_API_KEY",
-        "value": "${SENDGRID_API_KEY}"
-      },
-      {
         "name": "SESSION_SECRET",
         "value": "${SESSION_SECRET}"
       },
