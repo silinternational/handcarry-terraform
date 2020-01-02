@@ -42,8 +42,9 @@ resource "aws_alb_listener_rule" "tg" {
   }
 
   condition {
-    field  = "host-header"
-    values = ["${var.subdomain_api}.${var.cloudflare_domain}"]
+    host_header {
+      values = ["${var.subdomain_api}.${var.cloudflare_domain}"]
+    }
   }
 }
 
@@ -180,8 +181,9 @@ resource "aws_alb_listener_rule" "adminer" {
   }
 
   condition {
-    field  = "host-header"
-    values = ["${var.subdomain_api}-adminer.${var.cloudflare_domain}"]
+    host_header {
+      values = ["${var.subdomain_api}-adminer.${var.cloudflare_domain}"]
+    }
   }
 }
 

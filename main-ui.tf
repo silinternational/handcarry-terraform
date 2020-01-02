@@ -4,7 +4,7 @@ module "uisite" {
   version = "1.0.2"
 
   aliases        = ["${var.ui_aliases}"]
-  bucket_name    = "${var.subdomain_ui}.${var.cloudflare_domain}"
+  bucket_name    = "${var.ui_bucket_name}"
   cert_domain    = "${var.ui_cert_domain}"
   cf_default_ttl = "0"
   origin_path    = "public"
@@ -28,7 +28,7 @@ resource "aws_iam_user_policy" "codeship-ui" {
 // Create DNS CNAME record on Cloudflare for UI
 resource "cloudflare_record" "ui" {
   domain     = "${var.cloudflare_domain}"
-  name       = "${var.subdomain_ui}"
+  name       = "${var.subdomain_ui_dns_name}"
   type       = "CNAME"
   value      = "${module.uisite.cloudfront_hostname}"
   proxied    = true
