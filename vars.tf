@@ -39,7 +39,6 @@ variable "google_key" {}
 variable "google_secret" {}
 variable "mobile_service" {}
 variable "rollbar_token" {}
-variable "sendgrid_api_key" {}
 variable "session_secret" {}
 variable "tf_remote_common" {}
 
