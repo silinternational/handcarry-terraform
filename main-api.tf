@@ -88,6 +88,36 @@ module "rds" {
 }
 
 /*
+ * Create S3 bucket and credentials to store files in the bucket for request attachments
+ */
+resource "aws_iam_user" "attachments" {
+  name = "${var.app_name}-${data.terraform_remote_state.common.app_env}-attachments"
+}
+resource "aws_iam_access_key" "attachments" {
+  user = "${aws_iam_user.attachments.name}"
+}
+data "template_file" "bucket_policy" {
+  template = "${file("${path.module}/attachment-bucket-policy.json")}"
+
+  vars {
+    bucket_name = "${var.aws_s3_bucket}"
+    user_arn    = "${aws_iam_user.attachments.arn}"
+  }
+}
+resource "aws_s3_bucket" "attachments" {
+  bucket = "${var.aws_s3_bucket}"
+  acl    = "private"
+  policy = "${data.template_file.bucket_policy.rendered}"
+
+  tags = {
+    Name     = "${var.aws_s3_bucket}"
+    app_name = "${var.app_name}"
+    app_env  = "${data.terraform_remote_state.common.app_env}"
+  }
+
+}
+
+/*
  * Create task definition template
  */
 data "template_file" "task_def_api" {
@@ -105,8 +135,8 @@ data "template_file" "task_def_api" {
     HOST                     = "https://${var.subdomain_api}.${var.cloudflare_domain}"
     AWS_REGION               = "${var.aws_region}"
     AWS_S3_BUCKET            = "${var.aws_s3_bucket}"
-    AWS_S3_ACCESS_KEY_ID     = "${var.aws_s3_access_key_id}"
-    AWS_S3_SECRET_ACCESS_KEY = "${var.aws_s3_secret_access_key}"
+    AWS_S3_ACCESS_KEY_ID     = "${aws_iam_access_key.attachments.id}"
+    AWS_S3_SECRET_ACCESS_KEY = "${aws_iam_access_key.attachments.secret}"
     AUTH_CALLBACK_URL        = "${var.auth_callback_url}"
     SESSION_SECRET           = "${var.session_secret}"
     EMAIL_FROM_ADDRESS       = "${var.email_from_address}"

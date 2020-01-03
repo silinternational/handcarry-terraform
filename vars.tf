@@ -27,8 +27,6 @@ variable "auth_callback_url" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "aws_s3_bucket" {}
-variable "aws_s3_access_key_id" {}
-variable "aws_s3_secret_access_key" {}
 variable "cloudflare_email" {}
 variable "cloudflare_token" {}
 variable "cloudflare_domain" {}
