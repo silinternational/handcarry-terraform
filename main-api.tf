@@ -91,13 +91,13 @@ module "rds" {
  * Create S3 bucket and credentials to store files in the bucket for request attachments
  */
 resource "aws_iam_user" "attachments" {
-  name = "${var.app_name}-attachments-${data.terraform_remote_state.common.app_env}"
+  name = "${var.app_name}-${data.terraform_remote_state.common.app_env}-attachments"
 }
 resource "aws_iam_access_key" "attachments" {
   user = "${aws_iam_user.attachments.name}"
 }
 data "template_file" "bucket_policy" {
-  template = "${file("${path.module}/bucket-policy.json")}"
+  template = "${file("${path.module}/attachment-bucket-policy.json")}"
 
   vars {
     bucket_name = "${var.aws_s3_bucket}"
