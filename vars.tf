@@ -64,6 +64,10 @@ variable "alerts_email" {
   default = "support@wecarry.app"
 }
 
+variable "support_email" {
+  default = "support@wecarry.app"
+}
+
 variable "alerts_email_enabled" {
   default = "true"
 }

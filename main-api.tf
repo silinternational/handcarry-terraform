@@ -139,6 +139,7 @@ data "template_file" "task_def_api" {
     AWS_S3_SECRET_ACCESS_KEY = "${aws_iam_access_key.attachments.secret}"
     AUTH_CALLBACK_URL        = "${var.auth_callback_url}"
     SESSION_SECRET           = "${var.session_secret}"
+    SUPPORT_EMAIL            = "${var.support_email}"
     EMAIL_FROM_ADDRESS       = "${var.email_from_address}"
     EMAIL_SERVICE            = "${var.email_service}"
     MOBILE_SERVICE           = "${var.mobile_service}"

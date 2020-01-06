@@ -58,6 +58,10 @@
         "value": "${AUTH_CALLBACK_URL}"
       },
       {
+        "name": "SUPPORT_EMAIL",
+        "value": "${SUPPORT_EMAIL}"
+      },
+      {
         "name": "EMAIL_FROM_ADDRESS",
         "value": "${EMAIL_FROM_ADDRESS}"
       },
