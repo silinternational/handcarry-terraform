@@ -90,18 +90,38 @@ module "rds" {
 /*
  * Create S3 bucket and credentials to store files in the bucket for request attachments
  */
-resource "aws_iam_user" "attachments" {
-  name = "${var.app_name}-${data.terraform_remote_state.common.app_env}-attachments"
+resource "aws_iam_user" "wecarry" {
+  name = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
 }
 resource "aws_iam_access_key" "attachments" {
-  user = "${aws_iam_user.attachments.name}"
+  user = "${aws_iam_user.wecarry.name}"
 }
+resource "aws_iam_user_policy" "wecarry" {
+  user   = "${aws_iam_user.wecarry.name}"
+  policy = <<EOM
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "SendEmail",
+      "Effect": "Allow",
+      "Action":[
+        "ses:SendEmail",
+        "ses:SendRawEmail"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOM
+}
+
 data "template_file" "bucket_policy" {
   template = "${file("${path.module}/attachment-bucket-policy.json")}"
 
   vars {
     bucket_name = "${var.aws_s3_bucket}"
-    user_arn    = "${aws_iam_user.attachments.arn}"
+    user_arn    = "${aws_iam_user.wecarry.arn}"
   }
 }
 resource "aws_s3_bucket" "attachments" {
