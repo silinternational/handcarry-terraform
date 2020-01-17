@@ -27,6 +27,9 @@ variable "auth_callback_url" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "aws_s3_bucket" {}
+variable "azure_ad_key" {}
+variable "azure_ad_secret" {}
+variable "azure_ad_tenant" {}
 variable "cloudflare_email" {}
 variable "cloudflare_token" {}
 variable "cloudflare_domain" {}
