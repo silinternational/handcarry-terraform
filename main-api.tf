@@ -68,6 +68,10 @@ resource "random_id" "db_password" {
   byte_length = 16
 }
 
+resource "random_id" "service_integration_token" {
+  byte_length = 16
+}
+
 /*
  * Create new rds instance
  */
@@ -93,11 +97,14 @@ module "rds" {
 resource "aws_iam_user" "wecarry" {
   name = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
 }
+
 resource "aws_iam_access_key" "attachments" {
   user = "${aws_iam_user.wecarry.name}"
 }
+
 resource "aws_iam_user_policy" "wecarry" {
-  user   = "${aws_iam_user.wecarry.name}"
+  user = "${aws_iam_user.wecarry.name}"
+
   policy = <<EOM
 {
   "Version": "2012-10-17",
@@ -124,6 +131,7 @@ data "template_file" "bucket_policy" {
     user_arn    = "${aws_iam_user.wecarry.arn}"
   }
 }
+
 resource "aws_s3_bucket" "attachments" {
   bucket = "${var.aws_s3_bucket}"
   acl    = "private"
@@ -134,7 +142,6 @@ resource "aws_s3_bucket" "attachments" {
     app_name = "${var.app_name}"
     app_env  = "${data.terraform_remote_state.common.app_env}"
   }
-
 }
 
 /*
@@ -144,34 +151,35 @@ data "template_file" "task_def_api" {
   template = "${file("${path.module}/task-def-api.json")}"
 
   vars {
-    GO_ENV                   = "${var.go_env}"
-    cpu                      = "${var.cpu}"
-    memory                   = "${var.memory}"
-    docker_image             = "${module.ecr.repo_url}"
-    docker_tag               = "${var.docker_tag}"
-    APP_ENV                  = "${data.terraform_remote_state.common.app_env}"
-    DATABASE_URL             = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
-    UI_URL                   = "${var.ui_url}"
-    HOST                     = "https://${var.subdomain_api}.${var.cloudflare_domain}"
-    AWS_REGION               = "${var.aws_region}"
-    AWS_S3_BUCKET            = "${var.aws_s3_bucket}"
-    AWS_S3_ACCESS_KEY_ID     = "${aws_iam_access_key.attachments.id}"
-    AWS_S3_SECRET_ACCESS_KEY = "${aws_iam_access_key.attachments.secret}"
-    AZURE_AD_KEY             = "${var.azure_ad_key}"
-    AZURE_AD_SECRET          = "${var.azure_ad_secret}"
-    AZURE_AD_TENANT          = "${var.azure_ad_tenant}"
-    AUTH_CALLBACK_URL        = "${var.auth_callback_url}"
-    SESSION_SECRET           = "${var.session_secret}"
-    SUPPORT_EMAIL            = "${var.support_email}"
-    EMAIL_FROM_ADDRESS       = "${var.email_from_address}"
-    EMAIL_SERVICE            = "${var.email_service}"
-    MOBILE_SERVICE           = "${var.mobile_service}"
-    GOOGLE_KEY               = "${var.google_key}"
-    GOOGLE_SECRET            = "${var.google_secret}"
-    log_group                = "${aws_cloudwatch_log_group.wecarry.name}"
-    region                   = "${var.aws_region}"
-    log_stream_prefix        = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
-    ROLLBAR_TOKEN            = "${var.rollbar_token}"
+    GO_ENV                    = "${var.go_env}"
+    cpu                       = "${var.cpu}"
+    memory                    = "${var.memory}"
+    docker_image              = "${module.ecr.repo_url}"
+    docker_tag                = "${var.docker_tag}"
+    APP_ENV                   = "${data.terraform_remote_state.common.app_env}"
+    DATABASE_URL              = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
+    UI_URL                    = "${var.ui_url}"
+    HOST                      = "https://${var.subdomain_api}.${var.cloudflare_domain}"
+    AWS_REGION                = "${var.aws_region}"
+    AWS_S3_BUCKET             = "${var.aws_s3_bucket}"
+    AWS_S3_ACCESS_KEY_ID      = "${aws_iam_access_key.attachments.id}"
+    AWS_S3_SECRET_ACCESS_KEY  = "${aws_iam_access_key.attachments.secret}"
+    AZURE_AD_KEY              = "${var.azure_ad_key}"
+    AZURE_AD_SECRET           = "${var.azure_ad_secret}"
+    AZURE_AD_TENANT           = "${var.azure_ad_tenant}"
+    AUTH_CALLBACK_URL         = "${var.auth_callback_url}"
+    SESSION_SECRET            = "${var.session_secret}"
+    SUPPORT_EMAIL             = "${var.support_email}"
+    EMAIL_FROM_ADDRESS        = "${var.email_from_address}"
+    EMAIL_SERVICE             = "${var.email_service}"
+    MOBILE_SERVICE            = "${var.mobile_service}"
+    GOOGLE_KEY                = "${var.google_key}"
+    GOOGLE_SECRET             = "${var.google_secret}"
+    log_group                 = "${aws_cloudwatch_log_group.wecarry.name}"
+    region                    = "${var.aws_region}"
+    log_stream_prefix         = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
+    ROLLBAR_TOKEN             = "${var.rollbar_token}"
+    SERVICE_INTEGRATION_TOKEN = "${random_id.service_integration_token.hex}"
   }
 }
 
