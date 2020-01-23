@@ -19,7 +19,8 @@
     ],
     "command": null,
     "linuxParameters": null,
-    "cpu": ${cpu},
+    "cpu": ${cpu
+    },
     "environment": [
       {
         "name": "DATABASE_URL",
@@ -108,6 +109,10 @@
       {
         "name": "ROLLBAR_TOKEN",
         "value": "${ROLLBAR_TOKEN}"
+      },
+      {
+        "name": "SERVICE_INTEGRATION_TOKEN",
+        "value": "${SERVICE_INTEGRATION_TOKEN}"
       }
     ],
     "ulimits": null,
@@ -115,7 +120,8 @@
     "mountPoints": [],
     "workingDirectory": null,
     "dockerSecurityOptions": null,
-    "memory": ${memory},
+    "memory": ${memory
+    },
     "memoryReservation": null,
     "volumesFrom": [],
     "image": "${docker_image}:${docker_tag}",
