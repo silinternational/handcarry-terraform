@@ -166,17 +166,22 @@ resource "aws_iam_user_policy" "wecarry_lambdas" {
             "Effect": "Allow",
             "Action": [
                 "cloudformation:*",
-                "lambda:*"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:ListBucket",
-                "s3:PutObject",
-                "s3:CreateBucket"
-            ],
+                "events:DescribeRule",
+                "events:PutRule",
+                "events:PutTargets",
+                "events:RemoveTargets"
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:DeleteRolePolicy",
+                "iam:GetRole",
+                "iam:PassRole",
+                "iam:PutRolePolicy",
+                "lambda:*",
+                "logs:CreateLogGroup",
+                "logs:DeleteLogGroup",
+                "logs:DescribeLogGroups",
+                "s3:*"
+            ]
             "Resource": "*"
         }
     ]
