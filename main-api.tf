@@ -166,7 +166,16 @@ resource "aws_iam_user_policy" "wecarry_lambdas" {
             "Effect": "Allow",
             "Action": [
                 "cloudformation:*",
-                "lambda:*"
+                "lambda:*",
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3.ListBucket",
+                "s3.PutObject",
+                "s3.CreateBucket"
             ],
             "Resource": "*"
         }
