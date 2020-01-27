@@ -155,7 +155,7 @@ resource "aws_iam_access_key" "lambdas" {
   user = "${aws_iam_user.wecarry_lambdas.name}"
 }
 
-data "aws_iam_user_policy" "wecarry_lambdas" {
+resource "aws_iam_user_policy" "wecarry_lambdas" {
   user = "${aws_iam_user.wecarry_lambdas.name}"
 
   policy = <<EOM
