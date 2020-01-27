@@ -145,6 +145,37 @@ resource "aws_s3_bucket" "attachments" {
 }
 
 /*
+ * Create Lambda user
+ */
+resource "aws_iam_user" "wecarry_lambdas" {
+  name = "${var.app_name}-lambdas"
+}
+
+resource "aws_iam_access_key" "lambdas" {
+  user = "${aws_iam_user.wecarry_lambdas.name}"
+}
+
+data "aws_iam_user_policy" "wecarry_lambdas" {
+  user = "${aws_iam_user.wecarry_lambdas.name}"
+
+  policy = <<EOM
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:*"
+                "lambda:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOM
+}
+
+/*
  * Create task definition template
  */
 data "template_file" "task_def_api" {
