@@ -169,7 +169,7 @@ resource "aws_iam_user_policy" "wecarry_lambdas" {
                 "events:DescribeRule",
                 "events:PutRule",
                 "events:PutTargets",
-                "events:RemoveTargets"
+                "events:RemoveTargets",
                 "iam:CreateRole",
                 "iam:DeleteRole",
                 "iam:DeleteRolePolicy",
