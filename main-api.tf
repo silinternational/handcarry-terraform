@@ -181,7 +181,7 @@ resource "aws_iam_user_policy" "wecarry_lambdas" {
                 "logs:DeleteLogGroup",
                 "logs:DescribeLogGroups",
                 "s3:*"
-            ]
+            ],
             "Resource": "*"
         }
     ]
