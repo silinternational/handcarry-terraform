@@ -19,8 +19,7 @@
     ],
     "command": null,
     "linuxParameters": null,
-    "cpu": ${cpu
-    },
+    "cpu": ${cpu},
     "environment": [
       {
         "name": "DATABASE_URL",
@@ -120,8 +119,7 @@
     "mountPoints": [],
     "workingDirectory": null,
     "dockerSecurityOptions": null,
-    "memory": ${memory
-    },
+    "memory": ${memory},
     "memoryReservation": null,
     "volumesFrom": [],
     "image": "${docker_image}:${docker_tag}",
