@@ -155,38 +155,19 @@ resource "aws_iam_access_key" "lambdas" {
   user = "${aws_iam_user.wecarry_lambdas.name}"
 }
 
+data "template_file" "serverless_policy" {
+  template = "${file("${path.module}/serverless-policy.json")}"
+
+  vars {
+    app_env = "${data.terraform_remote_state.common.app_env}"
+    aws_region = "${var.aws_region}"
+  }
+}
+
 resource "aws_iam_user_policy" "wecarry_lambdas" {
   user = "${aws_iam_user.wecarry_lambdas.name}"
 
-  policy = <<EOM
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "cloudformation:*",
-                "events:DescribeRule",
-                "events:PutRule",
-                "events:PutTargets",
-                "events:RemoveTargets",
-                "iam:CreateRole",
-                "iam:DeleteRole",
-                "iam:DeleteRolePolicy",
-                "iam:GetRole",
-                "iam:PassRole",
-                "iam:PutRolePolicy",
-                "lambda:*",
-                "logs:CreateLogGroup",
-                "logs:DeleteLogGroup",
-                "logs:DescribeLogGroups",
-                "s3:*"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-EOM
+  policy = "${data.template_file.serverless_policy.rendered}"
 }
 
 /*
