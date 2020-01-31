@@ -148,7 +148,7 @@ resource "aws_s3_bucket" "attachments" {
  * Create Lambda user
  */
 resource "aws_iam_user" "wecarry_lambdas" {
-  name = "app-${var.app_env}-${var.app_name}-lambdas"
+  name = "app-${data.terraform_remote_state.common.app_env}-${var.app_name}-lambdas"
 }
 
 resource "aws_iam_access_key" "lambdas" {
@@ -165,7 +165,7 @@ data "template_file" "serverless_policy" {
 }
 
 resource "aws_iam_policy" "wecarry_lambdas" {
-  name        = "app-${var.app_env}-${var.app_name}-lambdas-deploy"
+  name        = "app-${data.terraform_remote_state.common.app_env}-${var.app_name}-lambdas-deploy"
   description = "WeCarry user for Serverless Lambdas deployment"
 
   policy = "${data.template_file.serverless_policy.rendered}"
@@ -173,7 +173,7 @@ resource "aws_iam_policy" "wecarry_lambdas" {
 
 resource "aws_iam_user_policy_attachment" "wecarry_lambdas" {
   user       = "${aws_iam_user.wecarry_lambdas.name}"
-  policy_arn = "${aws_iam_policy.policy.arn}"
+  policy_arn = "${aws_iam_policy.wecarry_lambdas.arn}"
 }
 
 /*
