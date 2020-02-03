@@ -58,6 +58,18 @@
         "value": "${AUTH_CALLBACK_URL}"
       },
       {
+        "name": "AZURE_AD_KEY",
+        "value": "${AZURE_AD_KEY}"
+      },
+      {
+        "name": "AZURE_AD_SECRET",
+        "value": "${AZURE_AD_SECRET}"
+      },
+      {
+        "name": "AZURE_AD_TENANT",
+        "value": "${AZURE_AD_TENANT}"
+      },
+      {
         "name": "SUPPORT_EMAIL",
         "value": "${SUPPORT_EMAIL}"
       },
@@ -96,6 +108,10 @@
       {
         "name": "ROLLBAR_TOKEN",
         "value": "${ROLLBAR_TOKEN}"
+      },
+      {
+        "name": "SERVICE_INTEGRATION_TOKEN",
+        "value": "${SERVICE_INTEGRATION_TOKEN}"
       }
     ],
     "ulimits": null,
