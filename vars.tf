@@ -41,9 +41,11 @@ variable "google_secret" {}
 variable "mobile_service" {}
 variable "rollbar_token" {}
 variable "session_secret" {}
+
 variable "subdomain_ui_dns_name" {
   description = "Used as value sent to cloudflare for dns record, separate var from subdomain_ui so that in prod we can pass @"
 }
+
 variable "tf_remote_common" {}
 variable "ui_bucket_name" {}
 
@@ -101,4 +103,8 @@ variable "ui_url" {}
 variable "ui_aliases" {
   type        = "list"
   description = "List of domains to serve UI site on, ex: dev.wecarry.app"
+}
+
+variable "log_level" {
+  description = "Level below which log messages are silenced"
 }

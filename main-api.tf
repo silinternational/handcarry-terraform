@@ -212,6 +212,7 @@ data "template_file" "task_def_api" {
     log_stream_prefix         = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
     ROLLBAR_TOKEN             = "${var.rollbar_token}"
     SERVICE_INTEGRATION_TOKEN = "${random_id.service_integration_token.hex}"
+    LOG_LEVEL                 = "${var.log_level}"
   }
 }
 
