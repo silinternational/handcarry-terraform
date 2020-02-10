@@ -38,6 +38,15 @@ variable "email_service" {}
 variable "go_env" {}
 variable "google_key" {}
 variable "google_secret" {}
+
+variable "mailchimp_api_base_url" {
+  default = "https://us4.api.mailchimp.com/3.0"
+}
+
+variable "mailchimp_api_key" {}
+variable "mailchimp_list_id" {}
+variable "mailchimp_username" {}
+
 variable "mobile_service" {}
 variable "rollbar_token" {}
 variable "session_secret" {}
