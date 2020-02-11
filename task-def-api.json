@@ -82,6 +82,22 @@
         "value": "${EMAIL_SERVICE}"
       },
       {
+        "name": "MAILCHIMP_API_BASE_URL",
+        "value": "${MAILCHIMP_API_BASE_URL}"
+      },
+      {
+        "name": "MAILCHIMP_API_KEY",
+        "value": "${MAILCHIMP_API_KEY}"
+      },
+      {
+        "name": "MAILCHIMP_LIST_ID",
+        "value": "${MAILCHIMP_LIST_ID}"
+      },
+      {
+        "name": "MAILCHIMP_USERNAME",
+        "value": "${MAILCHIMP_USERNAME}"
+      },
+      {
         "name": "MOBILE_SERVICE",
         "value": "${MOBILE_SERVICE}"
       },
@@ -112,6 +128,10 @@
       {
         "name": "SERVICE_INTEGRATION_TOKEN",
         "value": "${SERVICE_INTEGRATION_TOKEN}"
+      },
+      {
+        "name": "LOG_LEVEL",
+        "value": "${LOG_LEVEL}"
       }
     ],
     "ulimits": null,

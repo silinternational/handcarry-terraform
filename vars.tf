@@ -38,12 +38,23 @@ variable "email_service" {}
 variable "go_env" {}
 variable "google_key" {}
 variable "google_secret" {}
+
+variable "mailchimp_api_base_url" {
+  default = "https://us4.api.mailchimp.com/3.0"
+}
+
+variable "mailchimp_api_key" {}
+variable "mailchimp_list_id" {}
+variable "mailchimp_username" {}
+
 variable "mobile_service" {}
 variable "rollbar_token" {}
 variable "session_secret" {}
+
 variable "subdomain_ui_dns_name" {
   description = "Used as value sent to cloudflare for dns record, separate var from subdomain_ui so that in prod we can pass @"
 }
+
 variable "tf_remote_common" {}
 variable "ui_bucket_name" {}
 
@@ -101,4 +112,8 @@ variable "ui_url" {}
 variable "ui_aliases" {
   type        = "list"
   description = "List of domains to serve UI site on, ex: dev.wecarry.app"
+}
+
+variable "log_level" {
+  description = "Level below which log messages are silenced"
 }

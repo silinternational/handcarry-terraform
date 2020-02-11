@@ -204,6 +204,10 @@ data "template_file" "task_def_api" {
     SUPPORT_EMAIL             = "${var.support_email}"
     EMAIL_FROM_ADDRESS        = "${var.email_from_address}"
     EMAIL_SERVICE             = "${var.email_service}"
+    MAILCHIMP_API_BASE_URL    = "${var.mailchimp_api_base_url}"
+    MAILCHIMP_API_KEY         = "${var.mailchimp_api_key}"
+    MAILCHIMP_LIST_ID         = "${var.mailchimp_list_id}"
+    MAILCHIMP_USERNAME        = "${var.mailchimp_username}"
     MOBILE_SERVICE            = "${var.mobile_service}"
     GOOGLE_KEY                = "${var.google_key}"
     GOOGLE_SECRET             = "${var.google_secret}"
@@ -212,6 +216,7 @@ data "template_file" "task_def_api" {
     log_stream_prefix         = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
     ROLLBAR_TOKEN             = "${var.rollbar_token}"
     SERVICE_INTEGRATION_TOKEN = "${random_id.service_integration_token.hex}"
+    LOG_LEVEL                 = "${var.log_level}"
   }
 }
 
