@@ -189,7 +189,6 @@ data "template_file" "task_def_api" {
     docker_image              = "${module.ecr.repo_url}"
     docker_tag                = "${var.docker_tag}"
     APP_ENV                   = "${data.terraform_remote_state.common.app_env}"
-    API_BASE_URL              = "${var.api_base_url}"
     DATABASE_URL              = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
     UI_URL                    = "${var.ui_url}"
     HOST                      = "https://${var.subdomain_api}.${var.cloudflare_domain}"

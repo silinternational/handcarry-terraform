@@ -23,7 +23,6 @@ variable "enable_adminer" {
   description = "1 = enable adminer, 0 = disable adminer"
 }
 
-variable "api_base_url" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "aws_s3_bucket" {}
