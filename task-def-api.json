@@ -22,6 +22,10 @@
     "cpu": ${cpu},
     "environment": [
       {
+        "name": "API_BASE_URL",
+        "value": "${API_BASE_URL}"
+      },
+      {
         "name": "DATABASE_URL",
         "value": "${DATABASE_URL}"
       },
@@ -52,10 +56,6 @@
       {
         "name": "AWS_S3_SECRET_ACCESS_KEY",
         "value": "${AWS_S3_SECRET_ACCESS_KEY}"
-      },
-      {
-        "name": "AUTH_CALLBACK_URL",
-        "value": "${AUTH_CALLBACK_URL}"
       },
       {
         "name": "AZURE_AD_KEY",
@@ -106,12 +106,36 @@
         "value": "${SESSION_SECRET}"
       },
       {
+        "name": "FACEBOOK_KEY",
+        "value": "${FACEBOOK_KEY}"
+      },
+      {
+        "name": "FACEBOOK_SECRET",
+        "value": "${FACEBOOK_SECRET}"
+      },
+      {
         "name": "GOOGLE_KEY",
         "value": "${GOOGLE_KEY}"
       },
       {
         "name": "GOOGLE_SECRET",
         "value": "${GOOGLE_SECRET}"
+      },
+      {
+        "name": "LINKED_IN_KEY",
+        "value": "${LINKED_IN_KEY}"
+      },
+      {
+        "name": "LINKED_IN_SECRET",
+        "value": "${LINKED_IN_SECRET}"
+      },
+      {
+        "name": "TWITTER_KEY",
+        "value": "${TWITTER_KEY}"
+      },
+      {
+        "name": "TWITTER_SECRET",
+        "value": "${TWITTER_SECRET}"
       },
       {
         "name": "UI_URL",
