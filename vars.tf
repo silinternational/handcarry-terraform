@@ -23,7 +23,6 @@ variable "enable_adminer" {
   description = "1 = enable adminer, 0 = disable adminer"
 }
 
-variable "auth_callback_url" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 variable "aws_s3_bucket" {}
@@ -35,9 +34,15 @@ variable "cloudflare_token" {}
 variable "cloudflare_domain" {}
 variable "email_from_address" {}
 variable "email_service" {}
+variable "facebook_key" {default=""}
+variable "facebook_secret" {default=""}
 variable "go_env" {}
-variable "google_key" {}
-variable "google_secret" {}
+variable "google_key" {default=""}
+variable "google_secret" {default=""}
+variable "linked_in_key" {default=""}
+variable "linked_in_secret" {default=""}
+variable "microsoft_key" {default=""}
+variable "microsoft_secret" {default=""}
 
 variable "mailchimp_api_base_url" {
   default = "https://us4.api.mailchimp.com/3.0"
@@ -55,6 +60,9 @@ variable "subdomain_ui_dns_name" {
   description = "Used as value sent to cloudflare for dns record, separate var from subdomain_ui so that in prod we can pass @"
 }
 
+
+variable "twitter_key" {default=""}
+variable "twitter_secret" {default=""}
 variable "tf_remote_common" {}
 variable "ui_bucket_name" {}
 
