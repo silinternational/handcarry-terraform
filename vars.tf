@@ -41,6 +41,8 @@ variable "google_key" {default=""}
 variable "google_secret" {default=""}
 variable "linked_in_key" {default=""}
 variable "linked_in_secret" {default=""}
+variable "microsoft_key" {default=""}
+variable "microsoft_secret" {default=""}
 
 variable "mailchimp_api_base_url" {
   default = "https://us4.api.mailchimp.com/3.0"

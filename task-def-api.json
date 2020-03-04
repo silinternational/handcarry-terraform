@@ -126,6 +126,14 @@
         "value": "${LINKED_IN_SECRET}"
       },
       {
+        "name": "MICROSOFT_KEY",
+        "value": "${MICROSOFT_KEY}"
+      },
+      {
+        "name": "MICROSOFT_SECRET",
+        "value": "${MICROSOFT_SECRET}"
+      },
+      {
         "name": "TWITTER_KEY",
         "value": "${TWITTER_KEY}"
       },

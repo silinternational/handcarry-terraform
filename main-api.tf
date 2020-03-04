@@ -214,6 +214,8 @@ data "template_file" "task_def_api" {
     GOOGLE_SECRET             = "${var.google_secret}"
     LINKED_IN_KEY             = "${var.linked_in_key}"
     LINKED_IN_SECRET          = "${var.linked_in_secret}"
+    MICROSOFT_KEY             = "${var.microsoft_key}"
+    MICROSOFT_SECRET          = "${var.microsoft_secret}"
     TWITTER_KEY               = "${var.twitter_key}"
     TWITTER_SECRET            = "${var.twitter_secret}"
     log_group                 = "${aws_cloudwatch_log_group.wecarry.name}"
