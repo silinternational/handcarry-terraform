@@ -239,6 +239,9 @@ data "template_file" "task_def_api" {
     SERVICE_INTEGRATION_TOKEN = "${random_id.service_integration_token.hex}"
     LOG_LEVEL                 = "${var.log_level}"
     DISABLE_TLS               = "${var.disable_tls}"
+    CERT_DOMAIN_NAME          = "${var.subdomain_api}.${var.cloudflare_domain}"
+    CLOUDFLARE_AUTH_EMAIL     = "${var.cloudflare_email}"
+    CLOUDFLARE_AUTH_KEY       = "${var.cloudflare_token}"
   }
 }
 

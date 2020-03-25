@@ -164,6 +164,18 @@
       {
         "name": "DISABLE_TLS",
         "value": "${DISABLE_TLS}"
+      },
+      {
+        "name": "CERT_DOMAIN_NAME",
+        "value": "${CERT_DOMAIN_NAME}"
+      },
+      {
+        "name": "CLOUDFLARE_AUTH_EMAIL",
+        "value": "${CLOUDFLARE_AUTH_EMAIL}"
+      },
+      {
+        "name": "CLOUDFLARE_AUTH_KEY",
+        "value": "${CLOUDFLARE_AUTH_KEY}"
       }
     ],
     "ulimits": null,
