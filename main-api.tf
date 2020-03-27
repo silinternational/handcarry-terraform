@@ -15,7 +15,7 @@ module "ecr" {
 resource "aws_alb_target_group" "tg" {
   name                 = "${replace("tg-${var.app_name}-${data.terraform_remote_state.common.app_env}", "/(.{0,32})(.*)/", "$1")}"
   port                 = "3000"
-  protocol             = "HTTP"
+  protocol             = "${var.disable_tls == "true" ? "HTTP" : "HTTPS"}"
   vpc_id               = "${data.terraform_remote_state.common.vpc_id}"
   deregistration_delay = "30"
 
@@ -92,7 +92,7 @@ module "rds" {
 }
 
 /*
- * Create S3 bucket and credentials to store files in the bucket for request attachments
+ * Create user to interact with S3, SES, and DynamoDB (for CertMagic)
  */
 resource "aws_iam_user" "wecarry" {
   name = "${var.app_name}-${data.terraform_remote_state.common.app_env}"
@@ -117,6 +117,20 @@ resource "aws_iam_user_policy" "wecarry" {
         "ses:SendRawEmail"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "DynamoDB",
+      "Effect": "Allow",
+      "Action":[
+        "dynamodb:ConditionCheck",
+        "dynamodb:DeleteItem",
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+      ],
+      "Resource": "arn:aws:dynamodb:::table/CertMagic"
     }
   ]
 }
@@ -192,10 +206,10 @@ data "template_file" "task_def_api" {
     DATABASE_URL              = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
     UI_URL                    = "${var.ui_url}"
     HOST                      = "https://${var.subdomain_api}.${var.cloudflare_domain}"
-    AWS_REGION                = "${var.aws_region}"
+    AWS_DEFAULT_REGION        = "${var.aws_region}"
     AWS_S3_BUCKET             = "${var.aws_s3_bucket}"
-    AWS_S3_ACCESS_KEY_ID      = "${aws_iam_access_key.attachments.id}"
-    AWS_S3_SECRET_ACCESS_KEY  = "${aws_iam_access_key.attachments.secret}"
+    AWS_ACCESS_KEY_ID         = "${aws_iam_access_key.attachments.id}"
+    AWS_SECRET_ACCESS_KEY     = "${aws_iam_access_key.attachments.secret}"
     AZURE_AD_KEY              = "${var.azure_ad_key}"
     AZURE_AD_SECRET           = "${var.azure_ad_secret}"
     AZURE_AD_TENANT           = "${var.azure_ad_tenant}"
@@ -224,6 +238,10 @@ data "template_file" "task_def_api" {
     ROLLBAR_TOKEN             = "${var.rollbar_token}"
     SERVICE_INTEGRATION_TOKEN = "${random_id.service_integration_token.hex}"
     LOG_LEVEL                 = "${var.log_level}"
+    DISABLE_TLS               = "${var.disable_tls}"
+    CERT_DOMAIN_NAME          = "${var.subdomain_api}.${var.cloudflare_domain}"
+    CLOUDFLARE_AUTH_EMAIL     = "${var.cloudflare_email}"
+    CLOUDFLARE_AUTH_KEY       = "${var.cloudflare_token}"
   }
 }
 
