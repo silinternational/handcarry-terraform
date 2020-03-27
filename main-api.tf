@@ -24,8 +24,9 @@ resource "aws_alb_target_group" "tg" {
   }
 
   health_check {
-    path    = "/site/status"
-    matcher = "200"
+    path     = "/site/status"
+    matcher  = "200"
+    protocol = "${var.disable_tls == "true" ? "HTTP" : "HTTPS"}"
   }
 }
 
