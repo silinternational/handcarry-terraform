@@ -34,15 +34,15 @@ variable "cloudflare_token" {}
 variable "cloudflare_domain" {}
 variable "email_from_address" {}
 variable "email_service" {}
-variable "facebook_key" {default=""}
-variable "facebook_secret" {default=""}
+variable "facebook_key" { default = "" }
+variable "facebook_secret" { default = "" }
 variable "go_env" {}
-variable "google_key" {default=""}
-variable "google_secret" {default=""}
-variable "linked_in_key" {default=""}
-variable "linked_in_secret" {default=""}
-variable "microsoft_key" {default=""}
-variable "microsoft_secret" {default=""}
+variable "google_key" { default = "" }
+variable "google_secret" { default = "" }
+variable "linked_in_key" { default = "" }
+variable "linked_in_secret" { default = "" }
+variable "microsoft_key" { default = "" }
+variable "microsoft_secret" { default = "" }
 
 variable "mailchimp_api_base_url" {
   default = "https://us4.api.mailchimp.com/3.0"
@@ -61,8 +61,8 @@ variable "subdomain_ui_dns_name" {
 }
 
 
-variable "twitter_key" {default=""}
-variable "twitter_secret" {default=""}
+variable "twitter_key" { default = "" }
+variable "twitter_secret" { default = "" }
 variable "tf_remote_common" {}
 variable "ui_bucket_name" {}
 
@@ -124,4 +124,10 @@ variable "ui_aliases" {
 
 variable "log_level" {
   description = "Level below which log messages are silenced"
+}
+
+variable "disable_tls" {
+  description = "Whether or not to disable HTTPS/TLS"
+  type        = "string"
+  default     = "false"
 }
