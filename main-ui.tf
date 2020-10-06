@@ -3,7 +3,7 @@ module "uisite" {
   source  = "fillup/hugo-s3-cloudfront/aws"
   version = "4.1.0"
 
-  aliases             = [var.ui_aliases]
+  aliases             = var.ui_aliases
   bucket_name         = var.ui_bucket_name
   cert_domain         = var.ui_cert_domain
   cf_default_ttl      = "0"
