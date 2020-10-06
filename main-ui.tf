@@ -1,7 +1,7 @@
 // Create S3 bucket for static website hosting with cloudfront distro in front of it
 module "uisite" {
   source  = "fillup/hugo-s3-cloudfront/aws"
-  version = "3.0.0"
+  version = "4.1.0"
 
   aliases             = [var.ui_aliases]
   bucket_name         = var.ui_bucket_name
