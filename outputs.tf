@@ -25,3 +25,7 @@ output "aws_lambda_access_key_id" {
 output "aws_lambda_secret_access_key" {
   value = "${aws_iam_access_key.lambdas.secret}"
 }
+
+output "service_integration_token" {
+  value = "${random_id.service_integration_token.hex}"
+}
