@@ -7,7 +7,7 @@ terraform {
       version = "3.12.0"
     }
     cloudflare = {
-      source  = "terraform-providers/cloudflare"
+      source  = "cloudflare/cloudflare"
       version = "~> 2.0"
     }
     null = {
