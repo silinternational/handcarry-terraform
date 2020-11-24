@@ -364,3 +364,9 @@ resource "cloudflare_record" "adminer" {
   proxied = true
 }
 
+resource "null_resource" "force_apply" {
+  triggers = {
+    time = timestamp()
+  }
+}
+
