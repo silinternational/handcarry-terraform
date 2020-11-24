@@ -247,7 +247,7 @@ data "template_file" "task_def_api" {
     DISABLE_TLS               = var.disable_tls
     CERT_DOMAIN_NAME          = "${var.subdomain_api}.${var.cloudflare_domain}"
     CLOUDFLARE_AUTH_EMAIL     = var.cloudflare_email
-    CLOUDFLARE_AUTH_KEY       = var.cloudflare_token
+    CLOUDFLARE_AUTH_KEY       = var.cloudflare_api_key
   }
 }
 
