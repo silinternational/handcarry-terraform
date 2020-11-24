@@ -269,13 +269,21 @@ module "ecsapi" {
 
 /*
  * Create Cloudflare DNS record
- */
+*/
 resource "cloudflare_record" "dns" {
-  domain  = var.cloudflare_domain
+  zone_id = data.cloudflare_zones.domain.zones[0].id
   name    = var.subdomain_api
   value   = data.terraform_remote_state.common.outputs.alb_dns_name
   type    = "CNAME"
   proxied = true
+}
+
+data "cloudflare_zones" "domain" {
+  filter {
+    name        = var.cloudflare_domain
+    lookup_type = "exact"
+    status      = "active"
+  }
 }
 
 /******
