@@ -365,7 +365,7 @@ module "ecsadminer" {
  */
 resource "cloudflare_record" "adminer" {
   count   = var.enable_adminer
-  domain  = var.cloudflare_domain
+  zone_id = data.cloudflare_zones.domain.zones[0].id
   name    = "${var.subdomain_api}-adminer"
   value   = data.terraform_remote_state.common.outputs.alb_dns_name
   type    = "CNAME"
