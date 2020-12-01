@@ -247,7 +247,7 @@ data "template_file" "task_def_api" {
     DISABLE_TLS               = var.disable_tls
     CERT_DOMAIN_NAME          = "${var.subdomain_api}.${var.cloudflare_domain}"
     CLOUDFLARE_AUTH_EMAIL     = var.cloudflare_email
-    CLOUDFLARE_AUTH_KEY       = var.cloudflare_token
+    CLOUDFLARE_AUTH_KEY       = var.cloudflare_api_key
   }
 }
 
@@ -269,13 +269,21 @@ module "ecsapi" {
 
 /*
  * Create Cloudflare DNS record
- */
+*/
 resource "cloudflare_record" "dns" {
-  domain  = var.cloudflare_domain
+  zone_id = data.cloudflare_zones.domain.zones[0].id
   name    = var.subdomain_api
   value   = var.common_alb_dns_name
   type    = "CNAME"
   proxied = true
+}
+
+data "cloudflare_zones" "domain" {
+  filter {
+    name        = var.cloudflare_domain
+    lookup_type = "exact"
+    status      = "active"
+  }
 }
 
 /******
@@ -357,7 +365,7 @@ module "ecsadminer" {
  */
 resource "cloudflare_record" "adminer" {
   count   = var.enable_adminer
-  domain  = var.cloudflare_domain
+  zone_id = data.cloudflare_zones.domain.zones[0].id
   name    = "${var.subdomain_api}-adminer"
   value   = var.common_alb_dns_name
   type    = "CNAME"
