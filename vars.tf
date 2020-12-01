@@ -200,3 +200,17 @@ variable "disable_tls" {
   default     = "false"
 }
 
+// the following variables are a temporary replacement for the "common" remote state
+variable "common_app_env" {}
+variable "common_ecsInstanceRole_arn" {}
+variable "common_ecsServiceRole_arn" {}
+variable "common_codeship_arn" {}
+variable "common_vpc_id" {}
+variable "common_alb_https_listener_arn" {}
+variable "common_db_subnet_group_name" {}
+variable "common_vpc_default_sg_id" {}
+variable "common_ecs_cluster_id" {}
+variable "common_alb_dns_name" {}
+variable "common_aws_zones" {
+  type = list(string)
+}
