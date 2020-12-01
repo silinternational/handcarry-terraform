@@ -1,9 +1,9 @@
 output "ecr_repo_url" {
-  value = "${module.ecr.repo_url}"
+  value = module.ecr.repo_url
 }
 
 output "db_password" {
-  value = "${random_id.db_password.hex}"
+  value = random_id.db_password.hex
 }
 
 output "ui_bucket" {
@@ -19,9 +19,13 @@ output "api_url" {
 }
 
 output "aws_lambda_access_key_id" {
-  value = "${aws_iam_access_key.lambdas.id}"
+  value = aws_iam_access_key.lambdas.id
 }
 
 output "aws_lambda_secret_access_key" {
-  value = "${aws_iam_access_key.lambdas.secret}"
+  value = aws_iam_access_key.lambdas.secret
+}
+
+output "service_integration_token" {
+  value = random_id.service_integration_token.hex
 }
