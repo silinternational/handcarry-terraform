@@ -41,10 +41,22 @@ variable "azure_ad_secret" {
 variable "azure_ad_tenant" {
 }
 
+variable "cloudflare_account_id" {
+}
+
 variable "cloudflare_email" {
+  description = "The email associated with the Cloudflare account. Required if the API token is not provided."
+  default     = ""
 }
 
 variable "cloudflare_token" {
+  description = "The Cloudflare API token. This is an alternative to email+api_key. If both are specified, api_token will be used over email+api_key fields."
+  default     = ""
+}
+
+variable "cloudflare_api_key" {
+  description = "The Cloudflare API key. Required if the API token is not provided."
+  default     = ""
 }
 
 variable "cloudflare_domain" {
@@ -198,19 +210,4 @@ variable "disable_tls" {
   description = "Whether or not to disable HTTPS/TLS"
   type        = string
   default     = "false"
-}
-
-// the following variables are a temporary replacement for the "common" remote state
-variable "common_app_env" {}
-variable "common_ecsInstanceRole_arn" {}
-variable "common_ecsServiceRole_arn" {}
-variable "common_codeship_arn" {}
-variable "common_vpc_id" {}
-variable "common_alb_https_listener_arn" {}
-variable "common_db_subnet_group_name" {}
-variable "common_vpc_default_sg_id" {}
-variable "common_ecs_cluster_id" {}
-variable "common_alb_dns_name" {}
-variable "common_aws_zones" {
-  type = list(string)
 }

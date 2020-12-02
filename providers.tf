@@ -1,24 +1,19 @@
 provider "aws" {
-  version = "3.12.0"
   region     = var.aws_region
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
 }
 
 provider "cloudflare" {
-  version = "~> 1.0"
-  email   = var.cloudflare_email
-  token   = var.cloudflare_token
+  version    = "~> 2.0"
+  email      = var.cloudflare_email
+  api_key    = var.cloudflare_api_key
+  api_token  = var.cloudflare_token
+  account_id = var.cloudflare_account_id
 }
 
-provider "random" {
-  version = "~> 2.3"
-}
+provider "random" {}
 
-provider "template" {
-  version = "~> 2.1"
-}
+provider "template" {}
 
-provider "null" {
-  version = "~> 3.0"
-}
+provider "null" {}

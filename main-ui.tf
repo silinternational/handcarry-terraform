@@ -9,16 +9,15 @@ module "uisite" {
   cf_default_ttl      = "0"
   origin_path         = "/public"
   s3_origin_id        = "s3-origin"
-  deployment_user_arn = var.common_codeship_arn
+  deployment_user_arn = data.terraform_remote_state.common.outputs.codeship_arn
 }
 
 // Create DNS CNAME record on Cloudflare for UI
 resource "cloudflare_record" "ui" {
-  domain     = var.cloudflare_domain
+  zone_id    = data.cloudflare_zones.domain.zones[0].id
   name       = var.subdomain_ui_dns_name
   type       = "CNAME"
   value      = module.uisite.cloudfront_hostname
   proxied    = true
   depends_on = [module.uisite]
 }
-
