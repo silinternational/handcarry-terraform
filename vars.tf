@@ -46,17 +46,17 @@ variable "cloudflare_account_id" {
 
 variable "cloudflare_email" {
   description = "The email associated with the Cloudflare account. Required if the API token is not provided."
-  default = ""
+  default     = ""
 }
 
 variable "cloudflare_token" {
   description = "The Cloudflare API token. This is an alternative to email+api_key. If both are specified, api_token will be used over email+api_key fields."
-  default = ""
+  default     = ""
 }
 
 variable "cloudflare_api_key" {
   description = "The Cloudflare API key. Required if the API token is not provided."
-  default = ""
+  default     = ""
 }
 
 variable "cloudflare_domain" {
@@ -211,4 +211,3 @@ variable "disable_tls" {
   type        = string
   default     = "false"
 }
-

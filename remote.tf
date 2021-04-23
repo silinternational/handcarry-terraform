@@ -5,4 +5,3 @@ data "terraform_remote_state" "common" {
     name = var.tf_remote_common
   }
 }
-
