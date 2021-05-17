@@ -80,10 +80,10 @@ resource "random_id" "service_integration_token" {
 /*
  * Create new rds instance
  */
-module "rds" {
+module "rds11" {
   source              = "github.com/silinternational/terraform-modules//aws/rds/mariadb?ref=3.5.0"
   app_name            = var.app_name
-  app_env             = "${data.terraform_remote_state.common.outputs.app_env}-tf"
+  app_env             = "${data.terraform_remote_state.common.outputs.app_env}-11-tf"
   engine              = "postgres"
   engine_version      = "11.11"
   instance_class      = var.db_instance_class
@@ -210,7 +210,7 @@ data "template_file" "task_def_api" {
     docker_image              = module.ecr.repo_url
     docker_tag                = var.docker_tag
     APP_ENV                   = data.terraform_remote_state.common.outputs.app_env
-    DATABASE_URL              = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
+    DATABASE_URL              = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds11.address}:5432/${var.db_database}?sslmode=disable"
     UI_URL                    = var.ui_url
     HOST                      = "https://${var.subdomain_api}.${var.cloudflare_domain}"
     AWS_DEFAULT_REGION        = var.aws_region
@@ -341,7 +341,7 @@ data "template_file" "task_def_adminer" {
     memory                 = "128"
     docker_image           = "adminer"
     docker_tag             = "latest"
-    ADMINER_DEFAULT_SERVER = module.rds.address
+    ADMINER_DEFAULT_SERVER = module.rds11.address
   }
 }
 
