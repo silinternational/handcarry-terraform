@@ -176,6 +176,10 @@
       {
         "name": "CLOUDFLARE_AUTH_KEY",
         "value": "${CLOUDFLARE_AUTH_KEY}"
+      },
+      {
+        "name": "REDIS_INSTANCE_NAME",
+        "value": "${REDIS_INSTANCE_NAME}"
       }
     ],
     "ulimits": null,
