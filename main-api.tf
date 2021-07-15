@@ -391,4 +391,5 @@ module "redis" {
   engine             = "redis"
   engine_version     = "6.x"
   num_cache_nodes    = "1"
+  az_mode            = null
 }
