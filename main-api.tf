@@ -384,8 +384,8 @@ module "redis" {
   cluster_id         = "${var.app_name}-redis"
   security_group_ids = [data.terraform_remote_state.common.outputs.vpc_default_sg_id]
   subnet_group_name  = "${var.app_name}-subnet"
-  subnet_ids         = [data.terraform_remote_state.common.outputs.private_subnet_ids]
-  availability_zones = [data.terraform_remote_state.common.outputs.aws_zones]
+  subnet_ids         = data.terraform_remote_state.common.outputs.private_subnet_ids
+  availability_zones = data.terraform_remote_state.common.outputs.aws_zones
   app_name           = var.app_name
   app_env            = data.terraform_remote_state.common.outputs.app_env
   engine             = "redis"
