@@ -390,4 +390,5 @@ module "redis" {
   app_env            = data.terraform_remote_state.common.outputs.app_env
   engine             = "redis"
   engine_version     = "6.x"
+  num_cache_nodes    = "1"
 }
