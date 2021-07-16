@@ -374,12 +374,6 @@ resource "cloudflare_record" "adminer" {
   proxied = true
 }
 
-resource "null_resource" "force_apply" {
-  triggers = {
-    time = timestamp()
-  }
-}
-
 module "redis" {
   source             = "github.com/silinternational/terraform-modules//aws/elasticache/redis?ref=3.6.0"
   cluster_id         = "${var.app_name}-redis"
