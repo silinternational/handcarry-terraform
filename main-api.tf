@@ -249,7 +249,7 @@ data "template_file" "task_def_api" {
     CERT_DOMAIN_NAME          = "${var.subdomain_api}.${var.cloudflare_domain}"
     CLOUDFLARE_AUTH_EMAIL     = var.cloudflare_email
     CLOUDFLARE_AUTH_KEY       = var.cloudflare_api_key
-    REDIS_INSTANCE_NAME       = module.redis.cluster_address
+    REDIS_INSTANCE_HOST_PORT  = "${module.redis.cluster_address}:6379"
   }
 }
 

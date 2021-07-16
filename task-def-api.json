@@ -178,8 +178,8 @@
         "value": "${CLOUDFLARE_AUTH_KEY}"
       },
       {
-        "name": "REDIS_INSTANCE_NAME",
-        "value": "${REDIS_INSTANCE_NAME}"
+        "name": "REDIS_INSTANCE_HOST_PORT",
+        "value": "${REDIS_INSTANCE_HOST_PORT}"
       }
     ],
     "ulimits": null,
