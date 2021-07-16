@@ -1,9 +1,9 @@
 data "terraform_remote_state" "common" {
   backend = "remote"
   config = {
-    organization = "gtis"
+    organization = split("/", var.tf_remote_common)[0]
     workspaces = {
-      name = var.tf_remote_common
+      name = split("/", var.tf_remote_common)[1]
     }
   }
 }
