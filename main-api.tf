@@ -2,7 +2,7 @@
  * Create ECR repo
  */
 module "ecr" {
-  source              = "github.com/silinternational/terraform-modules//aws/ecr?ref=3.5.0"
+  source              = "github.com/silinternational/terraform-modules//aws/ecr?ref=3.6.0"
   repo_name           = "${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}"
   ecsInstanceRole_arn = data.terraform_remote_state.common.outputs.ecsInstanceRole_arn
   ecsServiceRole_arn  = data.terraform_remote_state.common.outputs.ecsServiceRole_arn
@@ -81,7 +81,7 @@ resource "random_id" "service_integration_token" {
  * Create new rds instance
  */
 module "rds11" {
-  source              = "github.com/silinternational/terraform-modules//aws/rds/mariadb?ref=3.5.0"
+  source              = "github.com/silinternational/terraform-modules//aws/rds/mariadb?ref=3.6.0"
   app_name            = var.app_name
   app_env             = "${data.terraform_remote_state.common.outputs.app_env}-11-tf"
   engine              = "postgres"
@@ -249,6 +249,7 @@ data "template_file" "task_def_api" {
     CERT_DOMAIN_NAME          = "${var.subdomain_api}.${var.cloudflare_domain}"
     CLOUDFLARE_AUTH_EMAIL     = var.cloudflare_email
     CLOUDFLARE_AUTH_KEY       = var.cloudflare_api_key
+    REDIS_INSTANCE_NAME       = module.redis.cluster_address
   }
 }
 
@@ -256,7 +257,7 @@ data "template_file" "task_def_api" {
  * Create new ecs service
  */
 module "ecsapi" {
-  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=3.5.0"
+  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=3.6.0"
   cluster_id         = data.terraform_remote_state.common.outputs.ecs_cluster_id
   service_name       = "${var.app_name}-api"
   service_env        = data.terraform_remote_state.common.outputs.app_env
@@ -349,7 +350,7 @@ data "template_file" "task_def_adminer" {
  * Create new ecs service
  */
 module "ecsadminer" {
-  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=3.5.0"
+  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=3.6.0"
   cluster_id         = data.terraform_remote_state.common.outputs.ecs_cluster_id
   service_name       = "${var.app_name}-adminer"
   service_env        = data.terraform_remote_state.common.outputs.app_env
@@ -373,9 +374,13 @@ resource "cloudflare_record" "adminer" {
   proxied = true
 }
 
-resource "null_resource" "force_apply" {
-  triggers = {
-    time = timestamp()
-  }
+module "redis" {
+  source             = "github.com/silinternational/terraform-modules//aws/elasticache/redis?ref=3.6.0"
+  cluster_id         = "${var.app_name}-redis"
+  security_group_ids = [data.terraform_remote_state.common.outputs.vpc_default_sg_id]
+  subnet_group_name  = "${var.app_name}-redis-subnet"
+  subnet_ids         = data.terraform_remote_state.common.outputs.private_subnet_ids
+  availability_zones = data.terraform_remote_state.common.outputs.aws_zones
+  app_name           = var.app_name
+  app_env            = data.terraform_remote_state.common.outputs.app_env
 }
-
