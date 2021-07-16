@@ -376,9 +376,9 @@ resource "cloudflare_record" "adminer" {
 
 module "redis" {
   source             = "github.com/silinternational/terraform-modules//aws/elasticache/redis?ref=3.6.2"
-  cluster_id         = "${var.app_name}-redis"
+  cluster_id         = "${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}-redis"
   security_group_ids = [data.terraform_remote_state.common.outputs.vpc_default_sg_id]
-  subnet_group_name  = "${var.app_name}-redis-subnet"
+  subnet_group_name  = "${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}-redis"
   subnet_ids         = data.terraform_remote_state.common.outputs.private_subnet_ids
   availability_zones = data.terraform_remote_state.common.outputs.aws_zones
   app_name           = var.app_name
