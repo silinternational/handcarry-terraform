@@ -384,7 +384,7 @@ module "redis" {
   source             = "github.com/silinternational/terraform-modules//aws/elasticache/redis?ref=redis"
   cluster_id         = "${var.app_name}-redis"
   security_group_ids = [data.terraform_remote_state.common.outputs.vpc_default_sg_id]
-  subnet_group_name  = "${var.app_name}-subnet"
+  subnet_group_name  = "${var.app_name}-redis-subnet"
   subnet_ids         = data.terraform_remote_state.common.outputs.private_subnet_ids
   availability_zones = data.terraform_remote_state.common.outputs.aws_zones
   app_name           = var.app_name
