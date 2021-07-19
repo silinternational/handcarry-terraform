@@ -3,24 +3,24 @@ terraform {
   required_version = ">= 0.14"
   required_providers {
     aws = {
+      version = "3.38.0"
       source  = "hashicorp/aws"
-      version = "3.12.0"
     }
     cloudflare = {
-      source  = "cloudflare/cloudflare"
       version = "~> 2.0"
+      source  = "cloudflare/cloudflare"
     }
     null = {
-      source  = "hashicorp/null"
       version = "~> 3.0"
+      source  = "hashicorp/null"
     }
     random = {
-      source  = "hashicorp/random"
       version = "~> 2.3"
+      source  = "hashicorp/random"
     }
     template = {
-      source  = "hashicorp/template"
       version = "~> 2.1"
+      source  = "hashicorp/template"
     }
   }
 }
