@@ -2,8 +2,8 @@
  * Create ECR repo
  */
 module "ecr" {
-  source              = "github.com/silinternational/terraform-modules//aws/ecr?ref=3.5.0"
-  repo_name           = "${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}"
+  source              = "github.com/silinternational/terraform-modules//aws/ecr?ref=3.6.2"
+  repo_name           = local.app_name_and_env
   ecsInstanceRole_arn = data.terraform_remote_state.common.outputs.ecsInstanceRole_arn
   ecsServiceRole_arn  = data.terraform_remote_state.common.outputs.ecsServiceRole_arn
   cd_user_arn         = data.terraform_remote_state.common.outputs.codeship_arn
@@ -14,7 +14,7 @@ module "ecr" {
  */
 resource "aws_alb_target_group" "tg" {
   name = replace(
-    "tg-${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}",
+    "tg-${local.app_name_and_env}",
     "/(.{0,32})(.*)/",
     "$1",
   )
@@ -57,7 +57,7 @@ resource "aws_alb_listener_rule" "tg" {
  * Create cloudwatch log group for app logs
  */
 resource "aws_cloudwatch_log_group" "wecarry" {
-  name              = "${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}"
+  name              = local.app_name_and_env
   retention_in_days = 14
 
   tags = {
@@ -80,11 +80,12 @@ resource "random_id" "service_integration_token" {
 /*
  * Create new rds instance
  */
-module "rds" {
-  source              = "github.com/silinternational/terraform-modules//aws/rds/mariadb?ref=3.5.0"
+module "rds11" {
+  source              = "github.com/silinternational/terraform-modules//aws/rds/mariadb?ref=3.6.2"
   app_name            = var.app_name
-  app_env             = "${data.terraform_remote_state.common.outputs.app_env}-tf"
+  app_env             = "${data.terraform_remote_state.common.outputs.app_env}-11-tf"
   engine              = "postgres"
+  engine_version      = "11.11"
   instance_class      = var.db_instance_class
   storage_encrypted   = var.db_storage_encrypted
   db_name             = var.db_database
@@ -100,7 +101,7 @@ module "rds" {
  * Create user to interact with S3, SES, and DynamoDB (for CertMagic)
  */
 resource "aws_iam_user" "wecarry" {
-  name = "${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}"
+  name = local.app_name_and_env
 }
 
 resource "aws_iam_access_key" "attachments" {
@@ -168,7 +169,7 @@ resource "aws_s3_bucket" "attachments" {
  * Create Lambda user
  */
 resource "aws_iam_user" "wecarry_lambdas" {
-  name = "app-${data.terraform_remote_state.common.outputs.app_env}-${var.app_name}-lambdas"
+  name = "app-${local.app_name_and_env}-lambdas"
 }
 
 resource "aws_iam_access_key" "lambdas" {
@@ -185,7 +186,7 @@ data "template_file" "serverless_policy" {
 }
 
 resource "aws_iam_policy" "wecarry_lambdas" {
-  name        = "app-${data.terraform_remote_state.common.outputs.app_env}-${var.app_name}-lambdas-deploy"
+  name        = "app-${local.app_name_and_env}-lambdas-deploy"
   description = "WeCarry user for Serverless Lambdas deployment"
 
   policy = data.template_file.serverless_policy.rendered
@@ -209,7 +210,7 @@ data "template_file" "task_def_api" {
     docker_image              = module.ecr.repo_url
     docker_tag                = var.docker_tag
     APP_ENV                   = data.terraform_remote_state.common.outputs.app_env
-    DATABASE_URL              = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
+    DATABASE_URL              = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds11.address}:5432/${var.db_database}?sslmode=disable"
     UI_URL                    = var.ui_url
     HOST                      = "https://${var.subdomain_api}.${var.cloudflare_domain}"
     AWS_DEFAULT_REGION        = var.aws_region
@@ -240,7 +241,7 @@ data "template_file" "task_def_api" {
     TWITTER_SECRET            = var.twitter_secret
     log_group                 = aws_cloudwatch_log_group.wecarry.name
     region                    = var.aws_region
-    log_stream_prefix         = "${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}"
+    log_stream_prefix         = local.app_name_and_env
     ROLLBAR_TOKEN             = var.rollbar_token
     SERVICE_INTEGRATION_TOKEN = random_id.service_integration_token.hex
     LOG_LEVEL                 = var.log_level
@@ -248,6 +249,7 @@ data "template_file" "task_def_api" {
     CERT_DOMAIN_NAME          = "${var.subdomain_api}.${var.cloudflare_domain}"
     CLOUDFLARE_AUTH_EMAIL     = var.cloudflare_email
     CLOUDFLARE_AUTH_KEY       = var.cloudflare_api_key
+    REDIS_INSTANCE_HOST_PORT  = "${module.redis.cluster_address}:6379"
   }
 }
 
@@ -255,7 +257,7 @@ data "template_file" "task_def_api" {
  * Create new ecs service
  */
 module "ecsapi" {
-  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=3.5.0"
+  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=3.6.2"
   cluster_id         = data.terraform_remote_state.common.outputs.ecs_cluster_id
   service_name       = "${var.app_name}-api"
   service_env        = data.terraform_remote_state.common.outputs.app_env
@@ -340,7 +342,7 @@ data "template_file" "task_def_adminer" {
     memory                 = "128"
     docker_image           = "adminer"
     docker_tag             = "latest"
-    ADMINER_DEFAULT_SERVER = module.rds.address
+    ADMINER_DEFAULT_SERVER = module.rds11.address
   }
 }
 
@@ -348,7 +350,7 @@ data "template_file" "task_def_adminer" {
  * Create new ecs service
  */
 module "ecsadminer" {
-  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=3.5.0"
+  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=3.6.2"
   cluster_id         = data.terraform_remote_state.common.outputs.ecs_cluster_id
   service_name       = "${var.app_name}-adminer"
   service_env        = data.terraform_remote_state.common.outputs.app_env
@@ -372,9 +374,17 @@ resource "cloudflare_record" "adminer" {
   proxied = true
 }
 
-resource "null_resource" "force_apply" {
-  triggers = {
-    time = timestamp()
-  }
+module "redis" {
+  source             = "github.com/silinternational/terraform-modules//aws/elasticache/redis?ref=3.6.2"
+  cluster_id         = "${local.app_name_and_env}-redis"
+  security_group_ids = [data.terraform_remote_state.common.outputs.vpc_default_sg_id]
+  subnet_group_name  = "${local.app_name_and_env}-redis"
+  subnet_ids         = data.terraform_remote_state.common.outputs.private_subnet_ids
+  availability_zones = data.terraform_remote_state.common.outputs.aws_zones
+  app_name           = var.app_name
+  app_env            = data.terraform_remote_state.common.outputs.app_env
 }
 
+locals {
+  app_name_and_env = "${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}"
+}
