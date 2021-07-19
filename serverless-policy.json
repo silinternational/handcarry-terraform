@@ -91,7 +91,8 @@
     },
     {
       "Action": [
-        "logs:DeleteLogGroup"
+        "logs:DeleteLogGroup",
+        "logs:PutRetentionPolicy"
       ],
       "Resource": [
         "arn:aws:logs:${aws_region}:*:log-group:/aws/lambda/wecarry-lambdas-${app_env}-cron:*"
