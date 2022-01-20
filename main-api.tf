@@ -85,7 +85,7 @@ module "rds11" {
   app_name            = var.app_name
   app_env             = "${data.terraform_remote_state.common.outputs.app_env}-11-tf"
   engine              = "postgres"
-  engine_version      = "11.11"
+  engine_version      = "11.12"
   instance_class      = var.db_instance_class
   storage_encrypted   = var.db_storage_encrypted
   db_name             = var.db_database
