@@ -5,8 +5,5 @@ provider "aws" {
 }
 
 provider "cloudflare" {
-  email      = var.cloudflare_email
-  api_key    = var.cloudflare_api_key
-  api_token  = var.cloudflare_token
-  account_id = var.cloudflare_account_id
+  api_token = var.cloudflare_token
 }
