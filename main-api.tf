@@ -85,6 +85,7 @@ module "rds" {
   app_name            = var.app_name
   app_env             = "${data.terraform_remote_state.common.outputs.app_env}-tf"
   engine              = "postgres"
+  engine_version      = "12.7"
   instance_class      = var.db_instance_class
   storage_encrypted   = var.db_storage_encrypted
   db_name             = var.db_database
@@ -97,7 +98,7 @@ module "rds" {
 }
 
 /*
- * Create user to interact with S3, SES, and DynamoDB (for CertMagic)
+ * Create user to interact with S3 and SES
  */
 resource "aws_iam_user" "wecarry" {
   name = local.app_name_and_env
@@ -122,20 +123,6 @@ resource "aws_iam_user_policy" "wecarry" {
         "ses:SendRawEmail"
       ],
       "Resource": "*"
-    },
-    {
-      "Sid": "DynamoDB",
-      "Effect": "Allow",
-      "Action":[
-        "dynamodb:ConditionCheck",
-        "dynamodb:DeleteItem",
-        "dynamodb:GetItem",
-        "dynamodb:PutItem",
-        "dynamodb:Query",
-        "dynamodb:Scan",
-        "dynamodb:UpdateItem"
-      ],
-      "Resource": "arn:aws:dynamodb:::table/CertMagic"
     }
   ]
 }
@@ -245,9 +232,6 @@ data "template_file" "task_def_api" {
     SERVICE_INTEGRATION_TOKEN = random_id.service_integration_token.hex
     LOG_LEVEL                 = var.log_level
     DISABLE_TLS               = var.disable_tls
-    CERT_DOMAIN_NAME          = "${var.subdomain_api}.${var.cloudflare_domain}"
-    CLOUDFLARE_AUTH_EMAIL     = var.cloudflare_email
-    CLOUDFLARE_AUTH_KEY       = var.cloudflare_api_key
     REDIS_INSTANCE_HOST_PORT  = "${module.redis.cluster_address}:6379"
   }
 }

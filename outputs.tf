@@ -23,7 +23,8 @@ output "aws_lambda_access_key_id" {
 }
 
 output "aws_lambda_secret_access_key" {
-  value = aws_iam_access_key.lambdas.secret
+  value     = aws_iam_access_key.lambdas.secret
+  sensitive = true
 }
 
 output "service_integration_token" {
