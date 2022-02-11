@@ -62,7 +62,7 @@ resource "aws_cloudwatch_log_group" "wecarry" {
 
   tags = {
     app_name = var.app_name
-    app_env  = data.terraform_remote_state.common.outputs.app_env
+    app_env  = local.app_env
   }
 }
 
@@ -83,7 +83,7 @@ resource "random_id" "service_integration_token" {
 module "rds" {
   source              = "github.com/silinternational/terraform-modules//aws/rds/mariadb?ref=3.6.2"
   app_name            = var.app_name
-  app_env             = "${data.terraform_remote_state.common.outputs.app_env}-tf"
+  app_env             = "${local.app_env}-tf"
   engine              = "postgres"
   engine_version      = "12.7"
   instance_class      = var.db_instance_class
@@ -130,24 +130,24 @@ EOM
 
 }
 
-data "template_file" "bucket_policy" {
-  template = file("${path.module}/attachment-bucket-policy.json")
-
-  vars = {
-    bucket_name = var.aws_s3_bucket
-    user_arn    = aws_iam_user.wecarry.arn
-  }
+locals {
+  bucket_policy = templatefile("${path.module}/attachment-bucket-policy.json",
+    {
+      bucket_name = var.aws_s3_bucket
+      user_arn    = aws_iam_user.wecarry.arn
+    }
+  )
 }
 
 resource "aws_s3_bucket" "attachments" {
   bucket = var.aws_s3_bucket
   acl    = "private"
-  policy = data.template_file.bucket_policy.rendered
+  policy = local.bucket_policy
 
   tags = {
     Name     = var.aws_s3_bucket
     app_name = var.app_name
-    app_env  = data.terraform_remote_state.common.outputs.app_env
+    app_env  = local.app_env
   }
 }
 
@@ -162,20 +162,20 @@ resource "aws_iam_access_key" "lambdas" {
   user = aws_iam_user.wecarry_lambdas.name
 }
 
-data "template_file" "serverless_policy" {
-  template = file("${path.module}/serverless-policy.json")
-
-  vars = {
-    app_env    = data.terraform_remote_state.common.outputs.app_env
-    aws_region = var.aws_region
-  }
+locals {
+  serverless_policy = templatefile("${path.module}/serverless-policy.json",
+    {
+      app_env    = local.app_env
+      aws_region = var.aws_region
+    }
+  )
 }
 
 resource "aws_iam_policy" "wecarry_lambdas" {
   name        = "app-${local.app_name_and_env}-lambdas-deploy"
   description = "WeCarry user for Serverless Lambdas deployment"
 
-  policy = data.template_file.serverless_policy.rendered
+  policy = local.serverless_policy
 }
 
 resource "aws_iam_user_policy_attachment" "wecarry_lambdas" {
@@ -186,54 +186,54 @@ resource "aws_iam_user_policy_attachment" "wecarry_lambdas" {
 /*
  * Create task definition template
  */
-data "template_file" "task_def_api" {
-  template = file("${path.module}/task-def-api.json")
-
-  vars = {
-    GO_ENV                    = var.go_env
-    cpu                       = var.cpu
-    memory                    = var.memory
-    docker_image              = module.ecr.repo_url
-    docker_tag                = var.docker_tag
-    APP_ENV                   = data.terraform_remote_state.common.outputs.app_env
-    DATABASE_URL              = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
-    UI_URL                    = var.ui_url
-    HOST                      = "https://${var.subdomain_api}.${var.cloudflare_domain}"
-    AWS_DEFAULT_REGION        = var.aws_region
-    AWS_S3_BUCKET             = var.aws_s3_bucket
-    AWS_ACCESS_KEY_ID         = aws_iam_access_key.attachments.id
-    AWS_SECRET_ACCESS_KEY     = aws_iam_access_key.attachments.secret
-    AZURE_AD_KEY              = var.azure_ad_key
-    AZURE_AD_SECRET           = var.azure_ad_secret
-    AZURE_AD_TENANT           = var.azure_ad_tenant
-    SESSION_SECRET            = var.session_secret
-    SUPPORT_EMAIL             = var.support_email
-    EMAIL_FROM_ADDRESS        = var.email_from_address
-    EMAIL_SERVICE             = var.email_service
-    MAILCHIMP_API_BASE_URL    = var.mailchimp_api_base_url
-    MAILCHIMP_API_KEY         = var.mailchimp_api_key
-    MAILCHIMP_LIST_ID         = var.mailchimp_list_id
-    MAILCHIMP_USERNAME        = var.mailchimp_username
-    MOBILE_SERVICE            = var.mobile_service
-    FACEBOOK_KEY              = var.facebook_key
-    FACEBOOK_SECRET           = var.facebook_secret
-    GOOGLE_KEY                = var.google_key
-    GOOGLE_SECRET             = var.google_secret
-    LINKED_IN_KEY             = var.linked_in_key
-    LINKED_IN_SECRET          = var.linked_in_secret
-    MICROSOFT_KEY             = var.microsoft_key
-    MICROSOFT_SECRET          = var.microsoft_secret
-    TWITTER_KEY               = var.twitter_key
-    TWITTER_SECRET            = var.twitter_secret
-    log_group                 = aws_cloudwatch_log_group.wecarry.name
-    region                    = var.aws_region
-    log_stream_prefix         = local.app_name_and_env
-    ROLLBAR_TOKEN             = var.rollbar_token
-    SERVICE_INTEGRATION_TOKEN = random_id.service_integration_token.hex
-    LOG_LEVEL                 = var.log_level
-    DISABLE_TLS               = var.disable_tls
-    REDIS_INSTANCE_HOST_PORT  = "${module.redis.cluster_address}:6379"
-  }
+locals {
+  task_def = templatefile("${path.module}/task-def-api.json",
+    {
+      GO_ENV                    = var.go_env
+      cpu                       = var.cpu
+      memory                    = var.memory
+      docker_image              = module.ecr.repo_url
+      docker_tag                = var.docker_tag
+      APP_ENV                   = local.app_env
+      DATABASE_URL              = "postgres://${var.db_user}:${random_id.db_password.hex}@${module.rds.address}:5432/${var.db_database}?sslmode=disable"
+      UI_URL                    = var.ui_url
+      HOST                      = "https://${var.subdomain_api}.${var.cloudflare_domain}"
+      AWS_DEFAULT_REGION        = var.aws_region
+      AWS_S3_BUCKET             = var.aws_s3_bucket
+      AWS_ACCESS_KEY_ID         = aws_iam_access_key.attachments.id
+      AWS_SECRET_ACCESS_KEY     = aws_iam_access_key.attachments.secret
+      AZURE_AD_KEY              = var.azure_ad_key
+      AZURE_AD_SECRET           = var.azure_ad_secret
+      AZURE_AD_TENANT           = var.azure_ad_tenant
+      SESSION_SECRET            = var.session_secret
+      SUPPORT_EMAIL             = var.support_email
+      EMAIL_FROM_ADDRESS        = var.email_from_address
+      EMAIL_SERVICE             = var.email_service
+      MAILCHIMP_API_BASE_URL    = var.mailchimp_api_base_url
+      MAILCHIMP_API_KEY         = var.mailchimp_api_key
+      MAILCHIMP_LIST_ID         = var.mailchimp_list_id
+      MAILCHIMP_USERNAME        = var.mailchimp_username
+      MOBILE_SERVICE            = var.mobile_service
+      FACEBOOK_KEY              = var.facebook_key
+      FACEBOOK_SECRET           = var.facebook_secret
+      GOOGLE_KEY                = var.google_key
+      GOOGLE_SECRET             = var.google_secret
+      LINKED_IN_KEY             = var.linked_in_key
+      LINKED_IN_SECRET          = var.linked_in_secret
+      MICROSOFT_KEY             = var.microsoft_key
+      MICROSOFT_SECRET          = var.microsoft_secret
+      TWITTER_KEY               = var.twitter_key
+      TWITTER_SECRET            = var.twitter_secret
+      log_group                 = aws_cloudwatch_log_group.wecarry.name
+      region                    = var.aws_region
+      log_stream_prefix         = local.app_name_and_env
+      ROLLBAR_TOKEN             = var.rollbar_token
+      SERVICE_INTEGRATION_TOKEN = random_id.service_integration_token.hex
+      LOG_LEVEL                 = var.log_level
+      DISABLE_TLS               = var.disable_tls
+      REDIS_INSTANCE_HOST_PORT  = "${module.redis.cluster_address}:6379"
+    }
+  )
 }
 
 /*
@@ -243,8 +243,8 @@ module "ecsapi" {
   source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=3.6.2"
   cluster_id         = data.terraform_remote_state.common.outputs.ecs_cluster_id
   service_name       = "${var.app_name}-api"
-  service_env        = data.terraform_remote_state.common.outputs.app_env
-  container_def_json = data.template_file.task_def_api.rendered
+  service_env        = local.app_env
+  container_def_json = local.task_def
   desired_count      = var.desired_count
   tg_arn             = aws_alb_target_group.tg.arn
   lb_container_name  = "buffalo"
@@ -254,7 +254,7 @@ module "ecsapi" {
 
 /*
  * Create Cloudflare DNS record
-*/
+ */
 resource "cloudflare_record" "dns" {
   zone_id = data.cloudflare_zones.domain.zones[0].id
   name    = var.subdomain_api
@@ -271,90 +271,24 @@ data "cloudflare_zones" "domain" {
   }
 }
 
-/******
- *  Adminer service
- */
-resource "aws_alb_target_group" "adminer" {
-  name = replace(
-    "tg-${var.app_name}-adminer-${data.terraform_remote_state.common.outputs.app_env}",
-    "/(.{0,32})(.*)/",
-    "$1",
-  )
-  port                 = "8080"
-  protocol             = "HTTP"
-  vpc_id               = data.terraform_remote_state.common.outputs.vpc_id
-  deregistration_delay = "30"
-
-  stickiness {
-    type = "lb_cookie"
-  }
-
-  health_check {
-    path    = "/"
-    matcher = "200"
-  }
-}
-
-/*
- * Create listener rule for hostname routing to new target group
- */
-resource "aws_alb_listener_rule" "adminer" {
-  listener_arn = data.terraform_remote_state.common.outputs.alb_https_listener_arn
-  priority     = "720"
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_alb_target_group.adminer.arn
-  }
-
-  condition {
-    host_header {
-      values = ["${var.subdomain_api}-adminer.${var.cloudflare_domain}"]
-    }
-  }
-}
-
-/*
- * Create task definition template for Postgres Adminer
- */
-data "template_file" "task_def_adminer" {
-  template = file("${path.module}/task-def-adminer.json")
-
-  vars = {
-    cpu                    = "128"
-    memory                 = "128"
-    docker_image           = "adminer"
-    docker_tag             = "latest"
-    ADMINER_DEFAULT_SERVER = module.rds.address
-  }
-}
-
-/*
- * Create new ecs service
- */
-module "ecsadminer" {
-  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=3.6.2"
-  cluster_id         = data.terraform_remote_state.common.outputs.ecs_cluster_id
-  service_name       = "${var.app_name}-adminer"
-  service_env        = data.terraform_remote_state.common.outputs.app_env
-  container_def_json = data.template_file.task_def_adminer.rendered
-  desired_count      = var.enable_adminer
-  tg_arn             = aws_alb_target_group.adminer.arn
-  lb_container_name  = "adminer"
-  lb_container_port  = "8080"
-  ecsServiceRole_arn = data.terraform_remote_state.common.outputs.ecsServiceRole_arn
-}
-
-/*
- * Create Cloudflare DNS record
- */
-resource "cloudflare_record" "adminer" {
-  count   = var.enable_adminer
-  zone_id = data.cloudflare_zones.domain.zones[0].id
-  name    = "${var.subdomain_api}-adminer"
-  value   = data.terraform_remote_state.common.outputs.alb_dns_name
-  type    = "CNAME"
-  proxied = true
+module "adminer" {
+  source                 = "silinternational/adminer/aws"
+  version                = "1.0.0"
+  adminer_default_server = module.rds.address
+  adminer_design         = var.adminer_design
+  adminer_plugins        = var.adminer_plugins
+  app_name               = var.app_name
+  app_env                = local.app_env
+  cpu                    = 128
+  vpc_id                 = data.terraform_remote_state.common.outputs.vpc_id
+  alb_https_listener_arn = data.terraform_remote_state.common.outputs.alb_https_listener_arn
+  alb_listener_priority  = 720
+  subdomain              = "${var.subdomain_api}-adminer"
+  cloudflare_domain      = var.cloudflare_domain
+  ecs_cluster_id         = data.terraform_remote_state.common.outputs.ecs_cluster_id
+  ecsServiceRole_arn     = data.terraform_remote_state.common.outputs.ecsServiceRole_arn
+  alb_dns_name           = data.terraform_remote_state.common.outputs.alb_dns_name
+  enable                 = var.enable_adminer
 }
 
 module "redis" {
@@ -365,9 +299,10 @@ module "redis" {
   subnet_ids         = data.terraform_remote_state.common.outputs.private_subnet_ids
   availability_zones = data.terraform_remote_state.common.outputs.aws_zones
   app_name           = var.app_name
-  app_env            = data.terraform_remote_state.common.outputs.app_env
+  app_env            = local.app_env
 }
 
 locals {
+  app_env          = data.terraform_remote_state.common.outputs.app_env
   app_name_and_env = "${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}"
 }
