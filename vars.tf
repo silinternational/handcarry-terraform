@@ -23,6 +23,16 @@ variable "enable_adminer" {
   description = "1 = enable adminer, 0 = disable adminer"
 }
 
+variable "adminer_design" {
+  description = "specify Adminer theme, see https://adminer.org/en#extras for options"
+  default     = ""
+}
+
+variable "adminer_plugins" {
+  description = "add Adminer plugins, see https://hub.docker.com/_/adminer/ for details"
+  default     = ""
+}
+
 variable "aws_access_key" {
 }
 
@@ -39,9 +49,6 @@ variable "azure_ad_secret" {
 }
 
 variable "azure_ad_tenant" {
-}
-
-variable "cloudflare_account_id" {
 }
 
 variable "cloudflare_token" {
