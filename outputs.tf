@@ -18,13 +18,11 @@ output "api_url" {
   value = "https://${var.subdomain_api}.${var.cloudflare_domain}"
 }
 
-output "aws_lambda_access_key_id" {
-  value = aws_iam_access_key.lambdas.id
+output "serverless-access-key-id" {
+  value = module.serverless-user.aws_access_key_id
 }
-
-output "aws_lambda_secret_access_key" {
-  value     = aws_iam_access_key.lambdas.secret
-  sensitive = true
+output "serverless-secret-access-key" {
+  value = nonsensitive(module.serverless-user.aws_secret_access_key)
 }
 
 output "service_integration_token" {
