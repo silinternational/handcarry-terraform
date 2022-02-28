@@ -159,7 +159,7 @@ module "serverless-user" {
   source  = "silinternational/serverless-user/aws"
   version = "0.1.0"
 
-  app_name   = "wecarry"
+  app_name   = "wecarry-${local.app_env}"
   aws_region = var.aws_region
 }
 
