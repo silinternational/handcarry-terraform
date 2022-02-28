@@ -151,36 +151,23 @@ resource "aws_s3_bucket" "attachments" {
   }
 }
 
+
 /*
- * Create Lambda user
+ * Create IAM user for Serverless framework to use to deploy the lambda function
  */
-resource "aws_iam_user" "wecarry_lambdas" {
-  name = "app-${local.app_name_and_env}-lambdas"
+module "serverless-user" {
+  source  = "silinternational/serverless-user/aws"
+  version = "0.1.0"
+
+  app_name   = "cloudflare-scanner"
+  aws_region = var.aws_region
 }
 
-resource "aws_iam_access_key" "lambdas" {
-  user = aws_iam_user.wecarry_lambdas.name
+output "serverless-access-key-id" {
+  value = module.serverless-user.aws_access_key_id
 }
-
-locals {
-  serverless_policy = templatefile("${path.module}/serverless-policy.json",
-    {
-      app_env    = local.app_env
-      aws_region = var.aws_region
-    }
-  )
-}
-
-resource "aws_iam_policy" "wecarry_lambdas" {
-  name        = "app-${local.app_name_and_env}-lambdas-deploy"
-  description = "WeCarry user for Serverless Lambdas deployment"
-
-  policy = local.serverless_policy
-}
-
-resource "aws_iam_user_policy_attachment" "wecarry_lambdas" {
-  user       = aws_iam_user.wecarry_lambdas.name
-  policy_arn = aws_iam_policy.wecarry_lambdas.arn
+output "serverless-secret-access-key" {
+  value = nonsensitive(module.serverless-user.aws_secret_access_key)
 }
 
 /*
