@@ -51,5 +51,5 @@ output "bkup_cron_schedule" {
 }
 
 output "backup_notification_events" {
-  value = var.enable_db_backup ? join( ", ", var.backup_notification_events) : ""
+  value = var.enable_db_backup ? join(", ", var.backup_notification_events) : ""
 }
