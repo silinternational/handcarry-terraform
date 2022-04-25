@@ -211,3 +211,20 @@ variable "disable_tls" {
   type        = string
   default     = "false"
 }
+
+
+variable "enable_db_backup" {
+  description = "Whether to have a database backup or not"
+  type        = bool
+  default     = false
+}
+
+variable "backup_cron_schedule" {
+  default = "31 1 */3 * ? *" # Every third day at 01:31 UTC
+}
+
+variable "backup_notification_events" {
+  description = "The names of the backup events that should trigger an email notification"
+  type        = list(string)
+  default     = ["BACKUP_JOB_STARTED", "BACKUP_JOB_COMPLETED", "BACKUP_JOB_FAILED", "RESTORE_JOB_COMPLETED"]
+}
