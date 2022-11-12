@@ -282,6 +282,23 @@ module "redis" {
   app_env            = local.app_env
 }
 
+
+
+/*
+ * Optionally create an AWS backup of the rds instance
+ */
+module "backup_rds" {
+  count                = var.enable_db_backup ? 1 : 0
+  source               = "github.com/silinternational/terraform-modules//aws/backup/rds?ref=5.1.0"
+  app_name             = var.app_name
+  app_env              = var.go_env
+  aws_access_key       = var.aws_access_key
+  aws_secret_key       = var.aws_secret_key
+  source_arns          = [module.rds.arn]
+  backup_cron_schedule = var.backup_cron_schedule
+  notification_events  = var.backup_notification_events
+}
+
 locals {
   app_env          = data.terraform_remote_state.common.outputs.app_env
   app_name_and_env = "${var.app_name}-${data.terraform_remote_state.common.outputs.app_env}"
