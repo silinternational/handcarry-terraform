@@ -179,6 +179,10 @@ variable "db_user" {
   default = "wecarry"
 }
 
+variable "db_engine_version" {
+  default = "12.11"
+}
+
 variable "db_instance_class" {
   default = "db.t2.micro"
 }
