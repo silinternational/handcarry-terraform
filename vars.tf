@@ -126,7 +126,7 @@ variable "session_secret" {
 }
 
 variable "subdomain_ui_dns_name" {
-  description = "Used as value sent to cloudflare for dns record, separate var from subdomain_ui so that in prod we can pass @"
+  description = "Used as value sent to cloudflare for dns record, accepts @ for root domain"
 }
 
 variable "twitter_key" {
@@ -145,10 +145,6 @@ variable "ui_bucket_name" {
 
 variable "subdomain_api" {
   default = "api"
-}
-
-variable "subdomain_ui" {
-  default = "my"
 }
 
 variable "docker_tag" {
