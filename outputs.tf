@@ -7,15 +7,15 @@ output "db_password" {
 }
 
 output "ui_bucket" {
-  value = "${var.subdomain_ui}.${var.cloudflare_domain}"
+  value = cloudflare_record.ui.hostname
 }
 
 output "ui_url" {
-  value = "https://${var.subdomain_ui}.${var.cloudflare_domain}"
+  value = "https://${cloudflare_record.ui.hostname}"
 }
 
 output "api_url" {
-  value = "https://${var.subdomain_api}.${var.cloudflare_domain}"
+  value = "https://${cloudflare_record.dns.hostname}"
 }
 
 output "serverless-access-key-id" {
