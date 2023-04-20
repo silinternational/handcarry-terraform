@@ -138,6 +138,7 @@ variable "twitter_secret" {
 }
 
 variable "tf_remote_common" {
+  description = "Workspace from which to pull instance-specific details for a shared ECS cluster, e.g. vpc_id, app_environment. Must be in the form organization/workspace."
 }
 
 variable "ui_bucket_name" {
