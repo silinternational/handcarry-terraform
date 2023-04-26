@@ -138,6 +138,7 @@ variable "twitter_secret" {
 }
 
 variable "tf_remote_common" {
+  description = "Workspace from which to pull instance-specific details for a shared ECS cluster, e.g. vpc_id, app_environment. Must be in the form organization/workspace."
 }
 
 variable "ui_bucket_name" {
@@ -227,6 +228,12 @@ variable "backup_notification_events" {
   description = "The names of the backup events that should trigger an email notification"
   type        = list(string)
   default     = ["BACKUP_JOB_STARTED", "BACKUP_JOB_COMPLETED", "BACKUP_JOB_FAILED", "RESTORE_JOB_COMPLETED"]
+}
+
+variable "backup_sns_topic_arn" {
+  description = "The ARN of the SNS topic for database backup process notifications"
+  type        = string
+  default     = ""
 }
 
 variable "customer" {
