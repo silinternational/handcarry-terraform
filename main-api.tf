@@ -220,7 +220,7 @@ locals {
  * Create new ecs service
  */
 module "ecsapi" {
-  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=8.0.0"
+  source             = "github.com/silinternational/terraform-modules//aws/ecs/service-only?ref=ignore-ecs-tags"
   cluster_id         = data.terraform_remote_state.common.outputs.ecs_cluster_id
   service_name       = "${var.app_name}-api"
   service_env        = local.app_env
