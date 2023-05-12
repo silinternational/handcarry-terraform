@@ -207,7 +207,6 @@ locals {
       log_group                 = aws_cloudwatch_log_group.wecarry.name
       region                    = var.aws_region
       log_stream_prefix         = local.app_name_and_env
-      ROLLBAR_TOKEN             = var.rollbar_token
       SERVICE_INTEGRATION_TOKEN = random_id.service_integration_token.hex
       LOG_LEVEL                 = var.log_level
       DISABLE_TLS               = var.disable_tls
