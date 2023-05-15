@@ -150,10 +150,6 @@
         "value": "${GO_ENV}"
       },
       {
-        "name": "ROLLBAR_TOKEN",
-        "value": "${ROLLBAR_TOKEN}"
-      },
-      {
         "name": "SERVICE_INTEGRATION_TOKEN",
         "value": "${SERVICE_INTEGRATION_TOKEN}"
       },

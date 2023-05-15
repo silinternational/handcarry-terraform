@@ -117,11 +117,6 @@ variable "mailchimp_username" {
 variable "mobile_service" {
 }
 
-variable "rollbar_token" {
-  description = "Rollbar API token. Omit to disable rollbar logging."
-  default     = ""
-}
-
 variable "session_secret" {
 }
 
