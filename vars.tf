@@ -106,9 +106,11 @@ variable "mailchimp_api_base_url" {
 }
 
 variable "mailchimp_api_key" {
+  default = ""
 }
 
 variable "mailchimp_list_id" {
+  default = ""
 }
 
 variable "mailchimp_username" {
